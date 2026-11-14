@@ -1,0 +1,3131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Morbi Accounting ERP v1.0 — Miracle & Shree Sava Zero-Learning-Curve Prototype</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter, JetBrains Mono, and Noto Sans Gujarati -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       CUSTOM DESKTOP ERP STYLING & DUAL-SKIN ENGINE (MIRACLE vs SHREE SAVA)
+       ========================================================================== */
+    :root {
+      --bg-workspace: #0c3547;
+      --bg-panel: #114358;
+      --bg-card: #092633;
+      --bg-header: #071e29;
+      --bg-menu: #e2e8f0;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-color: #296d8a;
+      --accent-primary: #facc15;
+      --accent-secondary: #38bdf8;
+      --grid-header-bg: #0e4f68;
+      --grid-header-text: #fde047;
+      --grid-row-even: #0a2d3d;
+      --grid-row-odd: #0e384b;
+      --grid-row-hover: #165670;
+      --input-bg: #07222e;
+      --input-text: #ffffff;
+      --input-focus-bg: #fef08a;
+      --input-focus-text: #000000;
+      --input-focus-border: #eab308;
+    }
+
+    /* SKIN 2: SHREE SAVA CLASSIC WINDOWS ERP SKIN */
+    body.skin-sava {
+      --bg-workspace: #dbe4ee;
+      --bg-panel: #ffffff;
+      --bg-card: #f1f5f9;
+      --bg-header: #1e3a8a;
+      --bg-menu: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border-color: #94a3b8;
+      --accent-primary: #1d4ed8;
+      --accent-secondary: #15803d;
+      --grid-header-bg: #1e40af;
+      --grid-header-text: #ffffff;
+      --grid-row-even: #ffffff;
+      --grid-row-odd: #f1f5f9;
+      --grid-row-hover: #dbeafe;
+      --input-bg: #ffffff;
+      --input-text: #0f172a;
+      --input-focus-bg: #fef9c3;
+      --input-focus-text: #000000;
+      --input-focus-border: #1d4ed8;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans Gujarati', sans-serif;
+      background-color: var(--bg-workspace);
+      color: var(--text-main);
+      user-select: none;
+      overflow-x: hidden;
+    }
+
+    .font-mono-erp {
+      font-family: 'JetBrains Mono', 'Noto Sans Gujarati', monospace;
+    }
+
+    /* Classic Miracle / Shree Sava High-Contrast Yellow Focus Input */
+    .erp-input {
+      background-color: var(--input-bg);
+      color: var(--input-text);
+      border: 1px solid var(--border-color);
+      padding: 3px 7px;
+      font-size: 0.82rem;
+      font-family: 'JetBrains Mono', 'Noto Sans Gujarati', monospace;
+      border-radius: 3px;
+      transition: background-color 0.08s ease, color 0.08s ease;
+    }
+
+    .erp-input:focus {
+      outline: 2px solid var(--input-focus-border);
+      background-color: var(--input-focus-bg) !important;
+      color: var(--input-focus-text) !important;
+      font-weight: 700;
+      box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.35);
+    }
+
+    /* ERP Panels & Tables */
+    .erp-panel {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-color);
+    }
+
+    .erp-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+    }
+
+    .erp-table th {
+      background-color: var(--grid-header-bg);
+      color: var(--grid-header-text);
+      border: 1px solid var(--border-color);
+      padding: 5px 8px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .erp-table td {
+      border: 1px solid var(--border-color);
+      padding: 4px 8px;
+      font-size: 0.8rem;
+    }
+
+    .erp-table tbody tr:nth-child(even) {
+      background-color: var(--grid-row-even);
+    }
+
+    .erp-table tbody tr:nth-child(odd) {
+      background-color: var(--grid-row-odd);
+    }
+
+    .erp-table tbody tr:hover,
+    .erp-table tbody tr.active-row {
+      background-color: var(--grid-row-hover);
+    }
+
+    /* Classic 3D Bevel Button for ERP */
+    .erp-btn {
+      border: 1px solid var(--border-color);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.25);
+      transition: all 0.1s ease;
+    }
+    .erp-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+
+    /* Dot-Matrix Paper Preview Effect */
+    .dot-matrix-paper {
+      background-color: #fdfbf0;
+      color: #1e293b;
+      font-family: 'JetBrains Mono', monospace;
+      background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+  </style>
+</head>
+<body class="h-screen flex flex-col justify-between overflow-hidden text-sm">
+
+  <!-- ==========================================================================
+       1. TOP DESKTOP WINDOW TITLE BAR & PROTOTYPE SCREEN SWITCHER
+       ========================================================================== -->
+  <header class=" shrink-0 select-none">
+    <!-- OS Window Frame Bar -->
+    <div class="bg-slate-950 text-slate-200 px-3 py-1.5 flex flex-wrap items-center justify-between border-b border-slate-800 text-xs gap-2">
+      <div class="flex items-center gap-2">
+        <span class="bg-amber-400 text-slate-950 font-extrabold px-1.5 py-0.5 rounded text-[11px] font-mono-erp">M</span>
+        <span class="font-bold tracking-wide text-amber-300" id="headerCompanyTitle">ROYAL CERAMICS PVT LTD (FY 2026-27)</span>
+        <span class="text-slate-500">|</span>
+        <span class="text-emerald-400 font-mono-erp">GSTIN: <span id="headerCompanyGstin">24AABCR9988D1Z1</span></span>
+        <span class="text-slate-500 hidden sm:inline">|</span>
+        <span class="hidden sm:inline text-cyan-300 font-mono-erp">Date (F2): <span id="headerActiveDate">14/11/2026</span></span>
+        <!-- CA Audit Lock Badge -->
+        <button onclick="toggleCaAuditLockModal()" id="headerAuditLockBadge" class="ml-1 px-2 py-0.5 rounded font-mono-erp text-[11px] font-bold bg-emerald-900/80 text-emerald-300 border border-emerald-600 hover:bg-emerald-800 transition flex items-center gap-1" title="Press F12 to Toggle CA Period Lock">
+          <span>🔓 CA Lock: OPEN (Oct-26)</span>
+        </button>
+      </div>
+
+      <!-- Skin, Language & Window Controls -->
+      <div class="flex items-center gap-2">
+        <!-- Skin Switcher -->
+        <div class="flex items-center bg-slate-900 border border-slate-700 rounded p-0.5">
+          <button onclick="setSkin('miracle')" id="btnSkinMiracle" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-400 text-slate-950 transition">
+            Miracle Classic
+          </button>
+          <button onclick="setSkin('sava')" id="btnSkinSava" class="px-2 py-0.5 rounded text-[11px] font-semibold text-slate-300 hover:text-white transition">
+            Shree Sava Skin
+          </button>
+        </div>
+
+        <!-- Language Switcher -->
+        <div class="flex items-center bg-slate-900 border border-slate-700 rounded p-0.5">
+          <button onclick="setLanguage('en')" id="btnLangEn" class="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-cyan-500 text-slate-950">EN</button>
+          <button onclick="setLanguage('gu')" id="btnLangGu" class="px-1.5 py-0.5 rounded text-[11px] font-semibold text-slate-300 hover:text-white">ગુજરાતી</button>
+          <button onclick="setLanguage('hi')" id="btnLangHi" class="px-1.5 py-0.5 rounded text-[11px] font-semibold text-slate-300 hover:text-white">हिन्दी</button>
+        </div>
+
+        <!-- Window Min/Max/Close simulation -->
+        <div class="hidden md:flex items-center gap-1 ml-1 text-slate-400 font-mono-erp">
+          <span class="px-1.5 py-0.5 bg-slate-800 rounded hover:bg-slate-700 cursor-pointer">_</span>
+          <span class="px-1.5 py-0.5 bg-slate-800 rounded hover:bg-slate-700 cursor-pointer">□</span>
+          <span onclick="switchScreen(3)" class="px-1.5 py-0.5 bg-rose-900/80 text-rose-200 rounded hover:bg-rose-700 cursor-pointer" title="Return to Main M-Desktop (Esc)">✕</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prototype 6-Screen Direct Jump Bar (For Instant Testing) -->
+    <div class="bg-slate-900 text-slate-300 px-3 py-1 flex items-center justify-between border-b border-slate-700 overflow-x-auto gap-1 text-xs">
+      <div class="flex items-center gap-1 shrink-0">
+        <span class="text-[10px] uppercase tracking-wider font-bold text-amber-400 mr-1">Prototype Screens:</span>
+        <button onclick="switchScreen(1)" id="navTab1" class="screen-tab px-2.5 py-1 rounded font-mono-erp text-xs transition">
+          1. Activation Wizard
+        </button>
+        <button onclick="switchScreen(2)" id="navTab2" class="screen-tab px-2.5 py-1 rounded font-mono-erp text-xs transition">
+          2. 1-Click Migration (.DBF)
+        </button>
+        <button onclick="switchScreen(3)" id="navTab3" class="screen-tab px-2.5 py-1 rounded font-mono-erp text-xs transition">
+          3. M-Desktop Workspace
+        </button>
+        <button onclick="switchScreen(4)" id="navTab4" class="screen-tab px-2.5 py-1 rounded font-mono-erp text-xs transition">
+          4. Ceramic Sales Invoice (F8)
+        </button>
+        <button onclick="switchScreen(5)" id="navTab5" class="screen-tab px-2.5 py-1 rounded font-mono-erp text-xs transition">
+          5. Gujarati Rojmel (F5/F6)
+        </button>
+        <button onclick="switchScreen(6)" id="navTab6" class="screen-tab px-2.5 py-1 rounded font-mono-erp text-xs transition">
+          6. CA Suite & GSTR-2B
+        </button>
+      </div>
+      <div class="hidden xl:flex items-center gap-1.5 shrink-0 text-[11px] font-mono-erp text-slate-400">
+        <button onclick="openModal('modalMasterCreation')" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded border border-slate-700">[F3] +Master</button>
+        <button onclick="toggleCalculator()" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded border border-slate-700">[F9] Calc</button>
+        <button onclick="openModal('modalClientSwitcher')" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-emerald-300 rounded border border-slate-700">[F10] Switch Co.</button>
+        <button onclick="openPrintModal()" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-purple-300 rounded border border-slate-700">[Alt+P] Print/WA</button>
+      </div>
+    </div>
+
+    <!-- Classic Miracle / Shree Sava Top Horizontal Dropdown Menu Bar -->
+    <nav class="bg-slate-200 text-slate-900 px-3 py-1 flex items-center justify-between border-b border-slate-400 text-xs font-semibold relative z-30">
+      <div class="flex items-center gap-4">
+        <!-- Master Dropdown -->
+        <div class="relative group">
+          <button class="hover:bg-blue-900 hover:text-white px-2 py-0.5 rounded transition flex items-center gap-1">
+            <u>M</u>aster <span class="text-[10px]">▼</span>
+          </button>
+          <div class="hidden group-hover:block absolute left-0 top-full w-60 bg-white text-slate-900 shadow-xl border border-slate-400 rounded py-1 z-50">
+            <button onclick="openMasterModal('party')" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Account Master (Khata)</span><span class="font-mono-erp text-[10px] opacity-75">F3</span></button>
+            <button onclick="openMasterModal('item')" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Product / Ceramic Size Master</span><span class="font-mono-erp text-[10px] opacity-75">F3</span></button>
+            <button onclick="openMasterModal('party')" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Broker / Agent Master</span><span class="font-mono-erp text-[10px] opacity-75">Alt+B</span></button>
+            <hr class="my-1 border-slate-200">
+            <button onclick="openLedgerModal()" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Opening Balance Editor</span><span class="font-mono-erp text-[10px] opacity-75">Ctrl+O</span></button>
+          </div>
+        </div>
+
+        <!-- Transaction Dropdown -->
+        <div class="relative group">
+          <button class="hover:bg-blue-900 hover:text-white px-2 py-0.5 rounded transition flex items-center gap-1">
+            <u>T</u>ransaction <span class="text-[10px]">▼</span>
+          </button>
+          <div class="hidden group-hover:block absolute left-0 top-full w-64 bg-white text-slate-900 shadow-xl border border-slate-400 rounded py-1 z-50">
+            <button onclick="switchScreen(5)" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>1. Quick Cash / Bank (Rojmel)</span><span class="font-mono-erp text-[10px] opacity-75">F5 / F6</span></button>
+            <button onclick="switchScreen(4)" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>2. Sales Tax Invoice (Ceramic)</span><span class="font-mono-erp text-[10px] opacity-75">F8</span></button>
+            <button onclick="switchScreen(6)" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>3. Purchase Entry & 2B Post</span><span class="font-mono-erp text-[10px] opacity-75">F9</span></button>
+            <button onclick="openHavalaModal()" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>4. Journal / Havala & TDS Entry</span><span class="font-mono-erp text-[10px] opacity-75">F7 / Ctrl+H</span></button>
+          </div>
+        </div>
+
+        <!-- GST Dropdown -->
+        <div class="relative group">
+          <button class="hover:bg-blue-900 hover:text-white px-2 py-0.5 rounded transition flex items-center gap-1">
+            <u>G</u>ST & E-Way <span class="text-[10px]">▼</span>
+          </button>
+          <div class="hidden group-hover:block absolute left-0 top-full w-64 bg-white text-slate-900 shadow-xl border border-slate-400 rounded py-1 z-50">
+            <button onclick="switchScreen(6)" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>GSTR-2B AI Fuzzy Reconciler</span><span class="font-mono-erp text-[10px] opacity-75">Alt+2</span></button>
+            <button onclick="triggerGstrJsonModal()" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Generate GSTR-1 & 3B JSON</span><span class="font-mono-erp text-[10px] opacity-75">Alt+J</span></button>
+            <button onclick="openPrintModal()" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>1-Click e-Invoice & e-Way Bill</span><span class="font-mono-erp text-[10px] opacity-75">Alt+E</span></button>
+          </div>
+        </div>
+
+        <!-- Report Dropdown -->
+        <div class="relative group">
+          <button class="hover:bg-blue-900 hover:text-white px-2 py-0.5 rounded transition flex items-center gap-1">
+            <u>R</u>eport <span class="text-[10px]">▼</span>
+          </button>
+          <div class="hidden group-hover:block absolute left-0 top-full w-64 bg-white text-slate-900 shadow-xl border border-slate-400 rounded py-1 z-50">
+            <button onclick="switchScreen(5)" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Rojmel (Traditional Day Book)</span><span class="font-mono-erp text-[10px] opacity-75">R1</span></button>
+            <button onclick="openLedgerModal()" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Account Ledger (Khata-Vahi)</span><span class="font-mono-erp text-[10px] opacity-75">L1</span></button>
+            <button onclick="openLedgerModal('aging')" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Bill-by-Bill Receivable Aging</span><span class="font-mono-erp text-[10px] opacity-75">O1</span></button>
+            <button onclick="openGraphModal()" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Monthly Sales Visual Graph</span><span class="font-mono-erp text-[10px] opacity-75">Ctrl+G</span></button>
+          </div>
+        </div>
+
+        <!-- Utility Dropdown -->
+        <div class="relative group">
+          <button class="hover:bg-blue-900 hover:text-white px-2 py-0.5 rounded transition flex items-center gap-1">
+            <u>U</u>tility <span class="text-[10px]">▼</span>
+          </button>
+          <div class="hidden group-hover:block absolute left-0 top-full w-64 bg-white text-slate-900 shadow-xl border border-slate-400 rounded py-1 z-50">
+            <button onclick="switchScreen(2)" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>1-Click Miracle / Sava Import</span><span class="font-mono-erp text-[10px] opacity-75">Ctrl+M</span></button>
+            <button onclick="openModal('modalDateChange')" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Change Voucher Date / Period</span><span class="font-mono-erp text-[10px] opacity-75">F2</span></button>
+            <button onclick="toggleCalculator()" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Inline Floating Calculator</span><span class="font-mono-erp text-[10px] opacity-75">F9</span></button>
+          </div>
+        </div>
+
+        <!-- CA-Suite Dropdown -->
+        <div class="relative group">
+          <button class="bg-amber-300/80 text-slate-950 hover:bg-blue-900 hover:text-white px-2 py-0.5 rounded transition flex items-center gap-1 font-bold">
+            <u>C</u>A-Suite <span class="text-[10px]">▼</span>
+          </button>
+          <div class="hidden group-hover:block absolute left-0 top-full w-64 bg-white text-slate-900 shadow-xl border border-slate-400 rounded py-1 z-50">
+            <button onclick="switchScreen(6)" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>CA Multi-Client Practice Hub</span><span class="font-mono-erp text-[10px] opacity-75">Alt+C</span></button>
+            <button onclick="openModal('modalClientSwitcher')" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Switch Client Company (100+)</span><span class="font-mono-erp text-[10px] opacity-75">F10</span></button>
+            <button onclick="triggerTallyXmlModal()" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>1-Click Tally XML / ITR Export</span><span class="font-mono-erp text-[10px] opacity-75">Alt+T</span></button>
+            <button onclick="toggleCaAuditLockModal()" class="w-full text-left px-3 py-1.5 hover:bg-blue-900 hover:text-white flex justify-between"><span>Freeze / Audit Lock Period</span><span class="font-mono-erp text-[10px] opacity-75">F12</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Menu Bar Info -->
+      <div class="flex items-center gap-3 text-[11px] font-mono-erp">
+        <span class="text-slate-700 hidden sm:inline">User: <strong>MUNIM_1</strong></span>
+        <span class="text-emerald-700 font-bold">● Rust SQLite-WAL (0.2ms)</span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==========================================================================
+       2. MAIN DYNAMIC VIEWPORT CONTAINER (6 INTERACTIVE SCREENS)
+       ========================================================================== -->
+  <main class="flex-1 overflow-y-auto p-2 sm:p-3 relative" id="mainViewport">
+
+    <!-- ========================================================================
+         SCREEN 1: FIRST-RUN SYSTEM ACTIVATION WIZARD (STEP 1 ON INSTALL)
+         ======================================================================== -->
+    <section id="screen-1" class="screen-view max-w-4xl mx-auto my-2">
+      <div class="erp-panel rounded shadow-2xl overflow-hidden border-2 border-amber-400/70">
+        <!-- Window Header -->
+        <div class="bg-slate-950 text-amber-300 px-4 py-2.5 flex items-center justify-between border-b border-slate-700 font-mono-erp">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 bg-amber-400 text-slate-950 font-bold rounded text-xs">STEP 1 OF 2</span>
+            <h1 class="font-bold text-sm sm:text-base tracking-wide" data-i18n="s1_title">MORBI ACCOUNTING ERP v1.0 — SYSTEM ACTIVATION WIZARD</h1>
+          </div>
+          <span class="text-xs text-emerald-400">Rust v1.82 • Tauri Native (14.2 MB)</span>
+        </div>
+
+        <div class="p-4 sm:p-6 space-y-5">
+          <!-- Edition Selection Radio Cards -->
+          <div>
+            <label class="block text-xs font-mono-erp uppercase text-amber-300 mb-2 font-bold">
+              Select Your License Edition (Use Up/Down Arrow or Click & Press ENTER):
+            </label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <!-- Option 1: CA Free Partner Edition -->
+              <div onclick="selectEdition('ca')" id="cardEditionCA" class="cursor-pointer p-3.5 rounded border-2 border-amber-400 bg-emerald-950/40 transition relative">
+                <div class="flex items-start gap-2.5">
+                  <input type="radio" name="editionType" id="radioEditionCA" checked class="mt-1 accent-amber-400" />
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 bg-emerald-500 text-slate-950 font-extrabold text-[11px] rounded font-mono-erp">FREE FOREVER</span>
+                      <span class="font-bold text-sm text-amber-300">CA / Tax Consultant / Munim</span>
+                    </div>
+                    <p class="text-xs opacity-85 mt-1.5 leading-relaxed">
+                      • Unlimited Client Companies & Unlimited Financial Years<br>
+                      • Unlimited Staff Workstations on Office LAN<br>
+                      • Direct Miracle/Shree Sava <code class="text-amber-300">.DBF / .ZIP</code> Reader & GSTR-2B AI Matcher
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Option 2: Business Edition -->
+              <div onclick="selectEdition('business')" id="cardEditionBiz" class="cursor-pointer p-3.5 rounded border border-slate-600 erp-card hover:border-amber-300 transition relative">
+                <div class="flex items-start gap-2.5">
+                  <input type="radio" name="editionType" id="radioEditionBiz" class="mt-1 accent-amber-400" />
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 bg-cyan-400 text-slate-950 font-extrabold text-[11px] rounded font-mono-erp">₹ 1,999 / YEAR</span>
+                      <span class="font-bold text-sm">Factory / Trader / Transporter</span>
+                    </div>
+                    <p class="text-xs opacity-85 mt-1.5 leading-relaxed">
+                      • Complete Billing, Ceramic Box-to-Sq.Mt & Broker Engine<br>
+                      • 1-Click E-Invoice, E-Way Bill & Native WhatsApp Auto-Send<br>
+                      • Zero Annual AMC Greed • Includes Owner iOS/Android App
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hardware Fingerprint & Credentials Form -->
+          <div class="erp-card p-4 rounded space-y-3 border border-slate-600/80">
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+              <label class="sm:col-span-4 text-xs font-mono-erp font-semibold">Machine Hardware ID (SHA-256):</label>
+              <div class="sm:col-span-8 flex items-center gap-2">
+                <input type="text" id="inputMachineId" value="MRB-8F92-44A1-C09E-771B" readonly class="erp-input w-full font-bold text-amber-300 tracking-wider" />
+                <button onclick="copyMachineId()" class="erp-btn px-3 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-mono-erp rounded shrink-0">
+                  Copy ID (Alt+C)
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+              <label class="sm:col-span-4 text-xs font-mono-erp font-semibold" id="lblMembershipInput">CA Membership / GSTP / Mobile:</label>
+              <div class="sm:col-span-8">
+                <input type="text" id="inputCaMobile" value="98250 44112 (M/S SHAH & CO. - MORBI)" class="erp-input w-full" placeholder="Enter Mobile or ICAI Membership No." />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+              <label class="sm:col-span-4 text-xs font-mono-erp font-semibold">Partner / License Key:</label>
+              <div class="sm:col-span-8 flex gap-2">
+                <input type="text" id="inputLicenseKey" value="CA-MORBI-FREE-2027-X99A" class="erp-input w-full uppercase tracking-widest" />
+                <span class="px-2.5 py-1 bg-emerald-900/70 text-emerald-300 border border-emerald-600 rounded text-xs font-mono-erp shrink-0 flex items-center">✓ Verified</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Offline Factory PC WhatsApp Activation Simulator -->
+          <div class="p-3.5 rounded bg-slate-950/80 border border-amber-500/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2 text-amber-300 font-mono-erp text-xs font-bold">
+                <span>⚡ NO INTERNET ON THIS FACTORY PC? (OFFLINE WHATSAPP UNLOCK)</span>
+              </div>
+              <p class="text-xs text-slate-300">
+                Send <code class="text-amber-300 bg-slate-900 px-1.5 py-0.5 rounded">ACT MRB-8F92</code> on WhatsApp to <strong>+91-98250-00000</strong> to get your instant 6-digit Offline Unlock PIN:
+              </p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+              <input type="text" id="inputOfflinePin" value="849201" maxlength="6" class="erp-input w-28 text-center font-bold tracking-widest text-base" placeholder="6-Digit PIN" />
+              <button onclick="simulateWhatsAppOtp()" class="erp-btn px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white font-mono-erp text-xs rounded font-semibold">
+                Simulate WhatsApp Bot PIN
+              </button>
+            </div>
+          </div>
+
+          <!-- Zero-Learning-Curve Look & Feel Selector -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <div class="erp-card p-3 rounded">
+              <label class="block text-xs font-mono-erp font-bold text-amber-300 mb-2">Choose Default Look & Feel (Zero Learning Curve):</label>
+              <div class="flex gap-3 text-xs">
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="wizSkin" id="wizSkinMiracle" checked onchange="setSkin('miracle')" class="accent-amber-400" />
+                  <span>Miracle Classic Skin</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="wizSkin" id="wizSkinSava" onchange="setSkin('sava')" class="accent-amber-400" />
+                  <span>Shree Sava Classic Skin</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="erp-card p-3 rounded">
+              <label class="block text-xs font-mono-erp font-bold text-amber-300 mb-2">Choose Interface Terminology Language:</label>
+              <div class="flex gap-3 text-xs">
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="wizLang" id="wizLangEn" checked onchange="setLanguage('en')" class="accent-amber-400" />
+                  <span>English</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="wizLang" id="wizLangGu" onchange="setLanguage('gu')" class="accent-amber-400" />
+                  <span>ગુજરાતી (Gujarati)</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="wizLang" id="wizLangHi" onchange="setLanguage('hi')" class="accent-amber-400" />
+                  <span>हिन्दी (Hindi)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Footer -->
+          <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-600/60">
+            <span class="text-xs font-mono-erp opacity-80">Press <kbd class="px-1.5 py-0.5 bg-slate-800 text-amber-300 rounded">Enter</kbd> or <kbd class="px-1.5 py-0.5 bg-slate-800 text-amber-300 rounded">Ctrl+A</kbd> to Activate & Continue</span>
+            <button onclick="completeActivationStep()" class="erp-btn w-full sm:w-auto px-6 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold font-mono-erp rounded text-sm tracking-wide shadow-lg">
+              [ ACTIVATE & PROCEED TO 1-CLICK MIGRATION (Enter) → ]
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SCREEN 2: STEP 2 - 1-CLICK DATA MIGRATION & PENNY-TO-PENNY RECONCILER
+         ======================================================================== -->
+    <section id="screen-2" class="screen-view hidden max-w-5xl mx-auto my-1">
+      <div class="erp-panel rounded shadow-2xl overflow-hidden border-2 border-cyan-400/70">
+        <!-- Window Header -->
+        <div class="bg-slate-950 text-cyan-300 px-4 py-2.5 flex items-center justify-between border-b border-slate-700 font-mono-erp">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 bg-cyan-400 text-slate-950 font-bold rounded text-xs">STEP 2 OF 2</span>
+            <h1 class="font-bold text-sm sm:text-base tracking-wide" data-i18n="s2_title">1-CLICK DATA MIGRATION ENGINE (MIRACLE & SHREE SAVA .DBF / .MDB)</h1>
+          </div>
+          <span class="text-xs text-amber-300">Rust Multithreaded DBF/CDX Reader</span>
+        </div>
+
+        <div class="p-4 sm:p-5 space-y-4">
+          <!-- Auto-Detected Legacy Folders Table + Drag & Drop -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+            <div class="lg:col-span-8 erp-card p-3 rounded flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-mono-erp font-bold text-amber-300 uppercase">Auto-Detected Legacy Installations on Local Drives & LAN:</span>
+                  <span class="text-[11px] font-mono-erp text-emerald-400">✓ Scanned C:\, D:\, E:\ in 0.14s</span>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full erp-table font-mono-erp text-left" id="tableMigrationSources">
+                    <thead>
+                      <tr>
+                        <th class="w-10 text-center">Sel</th>
+                        <th>Legacy Software</th>
+                        <th>Directory Path</th>
+                        <th>Detected Data</th>
+                        <th>Format</th>
+                      </tr>
+                    </thead>
+                    <tbody id="migrationSourcesBody">
+                      <tr class="cursor-pointer" onclick="toggleMigrationSource(0)">
+                        <td class="text-center"><input type="checkbox" checked id="migChk0" class="accent-amber-400" /></td>
+                        <td class="font-bold text-amber-300">1. MIRACLE ERP (v7.2 / 9.0)</td>
+                        <td><code>C:\Miracle\Data\RKIT\</code></td>
+                        <td>4 Companies (FY 2023-27)</td>
+                        <td><span class="px-1.5 py-0.5 bg-cyan-950 text-cyan-300 rounded text-[10px]">VFP .DBF/.CDX</span></td>
+                      </tr>
+                      <tr class="cursor-pointer" onclick="toggleMigrationSource(1)">
+                        <td class="text-center"><input type="checkbox" checked id="migChk1" class="accent-amber-400" /></td>
+                        <td class="font-bold text-emerald-300">2. SHREE SAVA ERP</td>
+                        <td><code>D:\SavaData\MorbiCeramics\</code></td>
+                        <td>2 Companies (FY 2024-27)</td>
+                        <td><span class="px-1.5 py-0.5 bg-purple-950 text-purple-300 rounded text-[10px]">.DBF / .MDB</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="mt-2.5 flex items-center justify-between text-xs">
+                <span class="opacity-80">Includes automatic Shree-Lipi / Gopika / Harikrishna to Unicode Gujarati conversion.</span>
+                <button onclick="runOneClickMigration()" class="erp-btn px-4 py-1.5 bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold font-mono-erp rounded">
+                  ▶ Re-Run 1-Click Migration Now
+                </button>
+              </div>
+            </div>
+
+            <!-- Simulated Drag & Drop Backup Ingester for CAs -->
+            <div onclick="simulateBackupDrop()" class="lg:col-span-4 erp-card p-3.5 rounded border-2 border-dashed border-amber-400/60 hover:border-amber-300 cursor-pointer flex flex-col items-center justify-center text-center transition group">
+              <div class="w-10 h-10 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center text-lg font-bold mb-2 group-hover:scale-110 transition">
+                📥
+              </div>
+              <p class="font-mono-erp font-bold text-xs text-amber-300">CA / MUNIM BACKUP DROPZONE</p>
+              <p class="text-[11px] opacity-80 mt-1">
+                Click or Drag & Drop Client's WhatsApp Backup (<code class="text-cyan-300">.ZIP</code>, <code class="text-cyan-300">ACCMAS.DBF</code>, or Raw Excel Trial Balance)
+              </p>
+              <span class="mt-2 px-2.5 py-1 bg-slate-800 text-amber-300 rounded text-[11px] font-mono-erp border border-slate-600">
+                + Simulate Client .ZIP Drop
+              </span>
+            </div>
+          </div>
+
+          <!-- Progress Bar & Step Checklist -->
+          <div class="erp-card p-3.5 rounded space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono-erp">
+              <span id="migrationStatusLabel" class="font-bold text-emerald-400">Migration Progress (Elapsed: 00:01.8 sec) — 100% Complete</span>
+              <span id="migrationPercentLabel" class="font-bold text-amber-300">100%</span>
+            </div>
+            <div class="w-full bg-slate-900 h-3.5 rounded overflow-hidden border border-slate-700">
+              <div id="migrationProgressBar" class="bg-gradient-to-r from-cyan-500 via-emerald-400 to-amber-400 h-full transition-all duration-300" style="width: 100%;"></div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 pt-1 text-xs font-mono-erp">
+              <div id="migStep1" class="p-2 rounded bg-slate-900/90 border border-emerald-600/50 text-emerald-300">
+                ✓ 1. Non-Unicode Gujarati Fonts Transliterated
+              </div>
+              <div id="migStep2" class="p-2 rounded bg-slate-900/90 border border-emerald-600/50 text-emerald-300">
+                ✓ 2. <code>ACCMAS.DBF</code>: 1,420 Party Ledgers Mapped
+              </div>
+              <div id="migStep3" class="p-2 rounded bg-slate-900/90 border border-emerald-600/50 text-emerald-300">
+                ✓ 3. <code>ITEMMAS.DBF</code>: 385 Tile Items & Box/Sq.Mt
+              </div>
+              <div id="migStep4" class="p-2 rounded bg-slate-900/90 border border-emerald-600/50 text-emerald-300">
+                ✓ 4. Bill Aging & 18,940 Vouchers Imported
+              </div>
+            </div>
+          </div>
+
+          <!-- Penny-to-Penny Trial Balance Verification Certificate -->
+          <div class="erp-card p-4 rounded border-2 border-emerald-500/60">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+              <div>
+                <h2 class="font-mono-erp font-extrabold text-sm text-amber-300 tracking-wide">
+                  === PENNY-TO-PENNY TRIAL BALANCE VERIFICATION CERTIFICATE ===
+                </h2>
+                <p class="text-xs opacity-80">Automatic Day-1 Audit Reconciliation: Legacy Miracle/Shree Sava vs. Morbi ERP SQLite</p>
+              </div>
+              <span class="px-3 py-1 bg-emerald-500 text-slate-950 font-mono-erp font-extrabold text-xs rounded shadow">
+                STATUS: 100% MATCH VERIFIED — ZERO DISCREPANCY
+              </span>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full erp-table font-mono-erp text-xs">
+                <thead>
+                  <tr>
+                    <th class="text-left">Account Head / Group Schedule</th>
+                    <th class="text-right">Miracle / Sava Closing</th>
+                    <th class="text-right">Imported ERP Closing</th>
+                    <th class="text-right">Difference (₹)</th>
+                    <th class="text-center">Verification</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="font-bold">Sundry Debtors (Morbi & Inter-State Dealers)</td>
+                    <td class="text-right">₹ 4,82,19,450.50 Dr</td>
+                    <td class="text-right">₹ 4,82,19,450.50 Dr</td>
+                    <td class="text-right text-emerald-400 font-bold">0.00</td>
+                    <td class="text-center text-emerald-400 font-bold">✓ MATCHED</td>
+                  </tr>
+                  <tr>
+                    <td class="font-bold">Sundry Creditors (Raw Clay, Glaze & Packaging)</td>
+                    <td class="text-right">₹ 2,15,04,120.00 Cr</td>
+                    <td class="text-right">₹ 2,15,04,120.00 Cr</td>
+                    <td class="text-right text-emerald-400 font-bold">0.00</td>
+                    <td class="text-center text-emerald-400 font-bold">✓ MATCHED</td>
+                  </tr>
+                  <tr>
+                    <td class="font-bold">Cash-on-Hand (Rojmel Silak) & Bank CC Accounts</td>
+                    <td class="text-right">₹ 64,88,910.25 Dr</td>
+                    <td class="text-right">₹ 64,88,910.25 Dr</td>
+                    <td class="text-right text-emerald-400 font-bold">0.00</td>
+                    <td class="text-center text-emerald-400 font-bold">✓ MATCHED</td>
+                  </tr>
+                  <tr>
+                    <td class="font-bold">Closing Ceramic Tile Stock (385 Sizes / 48,200 Boxes)</td>
+                    <td class="text-right">₹ 1,12,40,000.00 Dr</td>
+                    <td class="text-right">₹ 1,12,40,000.00 Dr</td>
+                    <td class="text-right text-emerald-400 font-bold">0.00</td>
+                    <td class="text-center text-emerald-400 font-bold">✓ MATCHED</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <button onclick="openPrintModal('certificate')" class="erp-btn px-4 py-2 bg-slate-800 hover:bg-slate-700 text-amber-300 font-mono-erp text-xs rounded border border-slate-600">
+                🖨️ Print Migration Audit Certificate (Ctrl+P)
+              </button>
+              <button onclick="switchScreen(3)" class="erp-btn w-full sm:w-auto px-6 py-2.5 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold font-mono-erp text-sm rounded shadow-lg">
+                [ LAUNCH M-DESKTOP WORKSPACE (Enter) → ]
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SCREEN 3: MAIN APPLICATION WORKSPACE ("M-DESKTOP" / SHREE SAVA SHELL)
+         ======================================================================== -->
+    <section id="screen-3" class="screen-view hidden h-full">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 h-full">
+
+        <!-- Left / Center Workspace (9 Columns) -->
+        <div class="lg:col-span-9 flex flex-col justify-between gap-3">
+          <!-- Top Company KPI Strip -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div onclick="switchScreen(4)" class="erp-panel p-3 rounded cursor-pointer hover:border-amber-400 transition">
+              <div class="text-[11px] font-mono-erp opacity-75 uppercase" data-i18n="kpi_sales">Today's Billing (F8)</div>
+              <div class="text-lg font-extrabold font-mono-erp text-amber-300 mt-0.5" id="kpiTodaySales">₹ 14,82,450</div>
+              <div class="text-[11px] text-emerald-400 font-mono-erp">12 Tax Invoices • 4,120 Boxes</div>
+            </div>
+            <div onclick="switchScreen(5)" class="erp-panel p-3 rounded cursor-pointer hover:border-amber-400 transition">
+              <div class="text-[11px] font-mono-erp opacity-75 uppercase" data-i18n="kpi_cash">Rojmel Cash Silak (F5)</div>
+              <div class="text-lg font-extrabold font-mono-erp text-emerald-400 mt-0.5" id="kpiCashBalance">₹ 1,33,200 Dr</div>
+              <div class="text-[11px] opacity-80 font-mono-erp">Bank CC: ₹ 63,55,710 Dr</div>
+            </div>
+            <div onclick="openLedgerModal('aging')" class="erp-panel p-3 rounded cursor-pointer hover:border-amber-400 transition">
+              <div class="text-[11px] font-mono-erp opacity-75 uppercase" data-i18n="kpi_debtors">Sundry Debtors (Ugrani)</div>
+              <div class="text-lg font-extrabold font-mono-erp text-cyan-300 mt-0.5">₹ 4,82,19,450</div>
+              <div class="text-[11px] text-amber-300 font-mono-erp">Click for Bill Aging / WhatsApp</div>
+            </div>
+            <div onclick="switchScreen(6)" class="erp-panel p-3 rounded cursor-pointer hover:border-amber-400 transition">
+              <div class="text-[11px] font-mono-erp opacity-75 uppercase" data-i18n="kpi_gstr">GSTR-2B ITC Status</div>
+              <div class="text-lg font-extrabold font-mono-erp text-purple-300 mt-0.5" id="kpiItcEligible">₹ 14,82,100</div>
+              <div class="text-[11px] text-rose-400 font-mono-erp" id="kpiItcMissingBadge">1 Missing Invoice in Books!</div>
+            </div>
+          </div>
+
+          <!-- Center Classic Miracle / Shree Sava Keyboard Transaction Menu Box -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-3 flex-1">
+            <!-- Classic Keyboard Menu Box (7 cols) -->
+            <div class="md:col-span-7 erp-panel rounded shadow-xl flex flex-col justify-between overflow-hidden border-2 border-amber-400/60">
+              <div>
+                <div class="bg-slate-950 text-amber-300 px-3.5 py-2 font-mono-erp font-bold text-xs flex items-center justify-between border-b border-slate-700">
+                  <span data-i18n="menu_tx_title">TRANSACTION & DESHI NAMA MENU (USE ↑/↓ & ENTER)</span>
+                  <span class="text-[11px] text-cyan-300">No-Mouse Mode Active</span>
+                </div>
+                <div class="p-2 space-y-1 font-mono-erp text-xs" id="desktopMenuContainer">
+                  <button onclick="switchScreen(5)" data-menu-idx="0" class="desktop-menu-item w-full text-left px-3 py-2 rounded flex items-center justify-between font-bold bg-amber-300 text-slate-950">
+                    <span>&gt; 1. Quick Entry -&gt; Cash / Bank (Rojmel / રોજમેળ)</span>
+                    <kbd class="px-1.5 py-0.5 bg-slate-900 text-amber-300 rounded text-[10px]">F5 / F6</kbd>
+                  </button>
+                  <button onclick="switchScreen(4)" data-menu-idx="1" class="desktop-menu-item w-full text-left px-3 py-2 rounded flex items-center justify-between hover:bg-slate-800/60">
+                    <span>&gt; 2. Sales Entry (Ceramic Tax Invoice / Challan)</span>
+                    <kbd class="px-1.5 py-0.5 bg-slate-800 text-amber-300 rounded text-[10px]">F8</kbd>
+                  </button>
+                  <button onclick="switchScreen(6)" data-menu-idx="2" class="desktop-menu-item w-full text-left px-3 py-2 rounded flex items-center justify-between hover:bg-slate-800/60">
+                    <span>&gt; 3. Purchase Entry &amp; GSTR-2B AI Auto-Post</span>
+                    <kbd class="px-1.5 py-0.5 bg-slate-800 text-amber-300 rounded text-[10px]">F9</kbd>
+                  </button>
+                  <button onclick="openMasterModal('party')" data-menu-idx="3" class="desktop-menu-item w-full text-left px-3 py-2 rounded flex items-center justify-between hover:bg-slate-800/60">
+                    <span>&gt; 4. Account &amp; Item Master Creation (With GSTIN Lookup)</span>
+                    <kbd class="px-1.5 py-0.5 bg-slate-800 text-amber-300 rounded text-[10px]">F3</kbd>
+                  </button>
+                  <button onclick="openLedgerModal('ledger')" data-menu-idx="4" class="desktop-menu-item w-full text-left px-3 py-2 rounded flex items-center justify-between hover:bg-slate-800/60">
+                    <span>&gt; 5. Khata-Vahi (Party Ledger) &amp; Audit Tick (✓)</span>
+                    <kbd class="px-1.5 py-0.5 bg-slate-800 text-amber-300 rounded text-[10px]">L1</kbd>
+                  </button>
+                  <button onclick="openLedgerModal('aging')" data-menu-idx="5" class="desktop-menu-item w-full text-left px-3 py-2 rounded flex items-center justify-between hover:bg-slate-800/60">
+                    <span>&gt; 6. Outstanding Ugrani &amp; Batch WhatsApp Reminder</span>
+                    <kbd class="px-1.5 py-0.5 bg-slate-800 text-amber-300 rounded text-[10px]">Alt+W</kbd>
+                  </button>
+                  <button onclick="openHavalaModal()" data-menu-idx="6" class="desktop-menu-item w-full text-left px-3 py-2 rounded flex items-center justify-between hover:bg-slate-800/60">
+                    <span>&gt; 7. Year-End Havala, Depreciation &amp; TDS Entry</span>
+                    <kbd class="px-1.5 py-0.5 bg-slate-800 text-amber-300 rounded text-[10px]">Ctrl+H</kbd>
+                  </button>
+                </div>
+              </div>
+              <div class="p-2.5 bg-slate-950/60 border-t border-slate-700/80 text-[11px] font-mono-erp flex items-center justify-between">
+                <span>Tip: Use <kbd class="text-amber-300">↑</kbd> <kbd class="text-amber-300">↓</kbd> arrows + <kbd class="text-amber-300">Enter</kbd> just like Miracle</span>
+                <button onclick="openGraphModal()" class="text-cyan-300 hover:underline font-bold">[Ctrl+G] Sales Graph</button>
+              </div>
+            </div>
+
+            <!-- Recently Accessed & Morbi Ceramic Stock Summary (5 cols) -->
+            <div class="md:col-span-5 flex flex-col gap-3">
+              <!-- Recently Accessed -->
+              <div class="erp-panel p-3 rounded flex-1">
+                <div class="text-xs font-mono-erp font-bold text-amber-300 uppercase mb-2 flex items-center justify-between">
+                  <span>RECENTLY ACCESSED (1-CLICK REOPEN)</span>
+                  <span class="text-[10px] opacity-70">History</span>
+                </div>
+                <div class="grid grid-cols-1 gap-1.5 font-mono-erp text-xs">
+                  <button onclick="openLedgerModal('ledger')" class="erp-card p-2 rounded text-left hover:border-amber-400 flex justify-between items-center">
+                    <span>[1] Party Ledger: Patel Tiles Mart</span>
+                    <span class="text-amber-300">₹ 4.12L Dr</span>
+                  </button>
+                  <button onclick="switchScreen(6)" class="erp-card p-2 rounded text-left hover:border-amber-400 flex justify-between items-center">
+                    <span>[2] GSTR-2B vs Purchase Reconciler</span>
+                    <span class="text-emerald-400">Oct-2026</span>
+                  </button>
+                  <button onclick="switchScreen(4)" class="erp-card p-2 rounded text-left hover:border-amber-400 flex justify-between items-center">
+                    <span>[3] Sales Inv #0842 (600x600 Statuario)</span>
+                    <span class="text-cyan-300">₹ 3.54L</span>
+                  </button>
+                  <button onclick="triggerTallyXmlModal()" class="erp-card p-2 rounded text-left hover:border-amber-400 flex justify-between items-center">
+                    <span>[4] Tally Prime XML &amp; Audit Export</span>
+                    <span class="text-purple-300">Ready</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Live Ceramic Factory Stock Matrix Preview -->
+              <div class="erp-panel p-3 rounded">
+                <div class="text-xs font-mono-erp font-bold text-cyan-300 uppercase mb-1.5 flex justify-between">
+                  <span>LIVE CERAMIC GODOWN STOCK</span>
+                  <button onclick="openMasterModal('item')" class="text-amber-300 hover:underline text-[11px]">[F3] +New Size</button>
+                </div>
+                <table class="w-full erp-table font-mono-erp text-[11px]">
+                  <thead>
+                    <tr>
+                      <th class="text-left">Tile Size / Design</th>
+                      <th class="text-center">Grade</th>
+                      <th class="text-right">Boxes</th>
+                      <th class="text-right">Sq.Mt</th>
+                    </tr>
+                  </thead>
+                  <tbody id="workspaceStockTable">
+                    <!-- Populated via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right-Hand Quick Access Dock ("M-Desktop" Sidebar - 3 Columns) -->
+        <div class="lg:col-span-3 erp-panel rounded p-3 flex flex-col justify-between border-2 border-cyan-500/50">
+          <div>
+            <div class="bg-slate-950 text-amber-300 px-3 py-1.5 rounded font-mono-erp font-bold text-xs text-center mb-2.5 border border-slate-700">
+              QUICK ACCESS (M-DESKTOP)
+            </div>
+            <div class="space-y-1.5 font-mono-erp text-xs">
+              <button onclick="switchScreen(4)" class="erp-btn w-full py-2 px-3 rounded bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold flex items-center justify-between">
+                <span>[F8] Sales Invoice</span>
+                <span>→</span>
+              </button>
+              <button onclick="switchScreen(5)" class="erp-btn w-full py-2 px-3 rounded erp-card hover:border-amber-400 flex items-center justify-between">
+                <span>[F5] Quick Cash/Bank</span>
+                <span class="text-emerald-400">Rojmel</span>
+              </button>
+              <button onclick="switchScreen(5)" class="erp-btn w-full py-2 px-3 rounded erp-card hover:border-amber-400 flex items-center justify-between">
+                <span>[R1] Rojmel (DayBook)</span>
+                <span class="text-amber-300">રોજમેળ</span>
+              </button>
+              <button onclick="openLedgerModal('ledger')" class="erp-btn w-full py-2 px-3 rounded erp-card hover:border-amber-400 flex items-center justify-between">
+                <span>[L1] Account Ledger</span>
+                <span class="text-cyan-300">ખાતાવહી</span>
+              </button>
+              <button onclick="openLedgerModal('aging')" class="erp-btn w-full py-2 px-3 rounded erp-card hover:border-amber-400 flex items-center justify-between">
+                <span>[O1] Bill Receivable</span>
+                <span class="text-amber-300">Aging</span>
+              </button>
+              <button onclick="switchScreen(6)" class="erp-btn w-full py-2 px-3 rounded erp-card hover:border-amber-400 flex items-center justify-between">
+                <span>[G2] GSTR-2B Matcher</span>
+                <span class="text-purple-300">AI</span>
+              </button>
+              <button onclick="openLedgerModal('aging')" class="erp-btn w-full py-2 px-3 rounded erp-card hover:border-amber-400 flex items-center justify-between">
+                <span>[W1] WhatsApp Ugrani</span>
+                <span class="text-emerald-400">Send</span>
+              </button>
+              <button onclick="triggerTallyXmlModal()" class="erp-btn w-full py-2 px-3 rounded erp-card hover:border-amber-400 flex items-center justify-between">
+                <span>[T1] Export Tally XML</span>
+                <span class="text-cyan-300">1-Click</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Multi-User LAN & Owner Mobile Sync Box -->
+          <div class="erp-card p-3 rounded mt-3 border border-emerald-500/40 space-y-1.5 font-mono-erp text-xs">
+            <div class="font-bold text-emerald-400 flex items-center justify-between">
+              <span>● LIVE OWNER SYNC STATUS</span>
+              <span class="text-[10px] px-1.5 py-0.5 bg-emerald-950 rounded">gRPC TLS</span>
+            </div>
+            <div class="text-[11px] space-y-1 opacity-90">
+              <div>• Local Factory LAN: <strong>4 PCs Active</strong></div>
+              <div>• CA Office Sync: <strong>M/s Shah &amp; Co.</strong></div>
+              <div>• Owner Mobile App: <strong>Synced 2s ago</strong></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SCREEN 4: HIGH-SPEED SALES INVOICE WITH MORBI CERAMIC & BROKER ENGINE
+         ======================================================================== -->
+    <section id="screen-4" class="screen-view hidden">
+      <div class="erp-panel rounded shadow-2xl overflow-hidden border-2 border-amber-400/80">
+        <!-- Voucher Header Bar -->
+        <div class="bg-slate-950 text-amber-300 px-3.5 py-2 flex flex-wrap items-center justify-between border-b border-slate-700 font-mono-erp text-xs gap-2">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 bg-amber-400 text-slate-950 font-extrabold rounded">F8</span>
+            <h2 class="font-bold text-sm tracking-wide" data-i18n="s4_title">SALES INVOICE (CERAMIC TAX INVOICE &amp; E-WAY BILL)</h2>
+            <span class="px-2 py-0.5 bg-cyan-950 text-cyan-300 border border-cyan-700 rounded text-[11px]">Mode: ADD / EDIT</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-slate-300">Press <kbd class="text-amber-300">Enter</kbd> to advance field • <kbd class="text-amber-300">F3</kbd> New Party/Item</span>
+            <span id="invoiceLockStatusPill" class="px-2 py-0.5 bg-emerald-900 text-emerald-300 rounded font-bold text-[11px]">Voucher Lock: OPEN</span>
+          </div>
+        </div>
+
+        <div class="p-3 space-y-3" id="salesInvoiceFormContainer">
+          <!-- Invoice Top Metadata Grid -->
+          <div class="erp-card p-3 rounded grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2.5 font-mono-erp text-xs items-center">
+            <div class="lg:col-span-2">
+              <label class="block text-[10px] opacity-75 uppercase">Bill Type</label>
+              <select id="invBillType" class="erp-input w-full enter-nav">
+                <option value="DEBIT">Debit (Credit)</option>
+                <option value="CASH">Cash Sales</option>
+                <option value="EXPORT">Export (LUT)</option>
+              </select>
+            </div>
+            <div class="lg:col-span-2">
+              <label class="block text-[10px] opacity-75 uppercase">Invoice No.</label>
+              <input type="text" id="invNumber" value="GST/26-27/0842" class="erp-input w-full font-bold text-amber-300 enter-nav" />
+            </div>
+            <div class="lg:col-span-2">
+              <label class="block text-[10px] opacity-75 uppercase">Date (F2)</label>
+              <input type="text" id="invDate" value="14/11/2026" class="erp-input w-full enter-nav" />
+            </div>
+            <div class="lg:col-span-4">
+              <div class="flex justify-between items-center">
+                <label class="text-[10px] opacity-75 uppercase">Party A/c Name (Press F3 to Add)</label>
+                <button onclick="openMasterModal('party')" class="text-[10px] text-amber-300 hover:underline font-bold">[F3: +New Party]</button>
+              </div>
+              <select id="invPartySelect" onchange="onInvoicePartyChange()" class="erp-input w-full font-bold enter-nav">
+                <!-- Populated dynamically from party master list -->
+              </select>
+            </div>
+            <div class="lg:col-span-2">
+              <label class="block text-[10px] opacity-75 uppercase">Party GSTIN &amp; Pos</label>
+              <div id="invPartyGstinBadge" class="px-2 py-1 rounded bg-emerald-950/90 border border-emerald-600 text-emerald-300 font-bold text-[11px] truncate">
+                24AABCP1234A1Z5 ✓
+              </div>
+            </div>
+
+            <!-- Row 2: Broker, Challan, Transport, Vehicle -->
+            <div class="lg:col-span-3">
+              <label class="block text-[10px] opacity-75 uppercase">Party Ledger Balance &amp; Limit</label>
+              <div id="invPartyBalDisplay" class="px-2 py-1 rounded bg-slate-900 border border-slate-700 text-amber-300 font-bold">
+                ₹ 4,12,500 Dr (Limit: ₹ 10L)
+              </div>
+            </div>
+            <div class="lg:col-span-3">
+              <label class="block text-[10px] opacity-75 uppercase">Broker / Dalal Agency</label>
+              <select id="invBrokerSelect" onchange="recalculateInvoice()" class="erp-input w-full enter-nav">
+                <option value="2.0" data-name="RAMESHWAR AGENCY">RAMESHWAR AGENCY (Comm: 2.00%)</option>
+                <option value="1.5" data-name="UMIYA CERAMIC BROKERS">UMIYA CERAMIC BROKERS (Comm: 1.50%)</option>
+                <option value="0" data-name="DIRECT (NO BROKER)">DIRECT / NO BROKER (0.00%)</option>
+              </select>
+            </div>
+            <div class="lg:col-span-2">
+              <label class="block text-[10px] opacity-75 uppercase">Challan No(s)</label>
+              <input type="text" id="invChallanNo" value="CH-881, CH-884" class="erp-input w-full enter-nav" />
+            </div>
+            <div class="lg:col-span-2">
+              <label class="block text-[10px] opacity-75 uppercase">Transport &amp; LR No</label>
+              <input type="text" id="invTransport" value="MORBI ROADLINES / LR-9921" class="erp-input w-full enter-nav" />
+            </div>
+            <div class="lg:col-span-2">
+              <label class="block text-[10px] opacity-75 uppercase">Truck / Vehicle No</label>
+              <input type="text" id="invVehicleNo" value="GJ-36-T-4455" class="erp-input w-full uppercase font-bold text-cyan-300 enter-nav" />
+            </div>
+          </div>
+
+          <!-- Ceramic Multi-Unit Line-Item Grid (Boxes <-> Pcs <-> Sq.Mt <-> Rate per Sq.Mt or Box) -->
+          <div class="erp-card p-2.5 rounded">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2 font-mono-erp text-xs">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-amber-300 uppercase">CERAMIC LINE-ITEM MATRIX (AUTO BOX ↔ SQ.MT CONVERTER)</span>
+                <span class="text-[11px] opacity-75 hidden md:inline">(Change Boxes, Sq.Mt/Box, or switch Rate Basis between Sq.Mt &amp; Box)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="openMasterModal('item')" class="erp-btn px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded text-[11px]">
+                  [F3] +Create Tile Master
+                </button>
+                <button onclick="addInvoiceRow()" class="erp-btn px-2.5 py-1 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded text-[11px]">
+                  + Add Row (Insert)
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full erp-table font-mono-erp text-xs" id="invoiceItemsTable">
+                <thead>
+                  <tr>
+                    <th class="w-8 text-center">Sr</th>
+                    <th class="min-w-[190px] text-left">Item / Tile Design Size (F3)</th>
+                    <th class="w-16 text-center">HSN</th>
+                    <th class="w-16 text-center">Grade</th>
+                    <th class="w-20 text-right">Boxes</th>
+                    <th class="w-16 text-center">Pcs/Bx</th>
+                    <th class="w-20 text-right">Sq.Mt/Bx</th>
+                    <th class="w-24 text-right">Total Sq.Mt</th>
+                    <th class="w-24 text-center">Rate Per</th>
+                    <th class="w-24 text-right">Rate (₹)</th>
+                    <th class="w-16 text-right">Disc%</th>
+                    <th class="w-28 text-right">Taxable (₹)</th>
+                    <th class="w-14 text-center">GST%</th>
+                    <th class="w-28 text-right">Net Amt (₹)</th>
+                    <th class="w-10 text-center">Del</th>
+                  </tr>
+                </thead>
+                <tbody id="invoiceItemsBody">
+                  <!-- Dynamically rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Invoice Footer Totals, Weight, Brokerage & Tax Breakdown -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 font-mono-erp text-xs">
+            <!-- Left Footer: Narration, Weight, Broker Commission & Checkboxes (7 cols) -->
+            <div class="lg:col-span-7 erp-card p-3 rounded flex flex-col justify-between space-y-2.5">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div class="p-2 rounded bg-slate-900/90 border border-slate-700">
+                  <span class="text-[10px] opacity-75 block">TOTAL BOXES &amp; AREA</span>
+                  <span class="font-bold text-amber-300 text-sm" id="invSumBoxesSqmt">750 Bx | 1,080.00 Sq.Mt</span>
+                </div>
+                <div class="p-2 rounded bg-slate-900/90 border border-slate-700">
+                  <span class="text-[10px] opacity-75 block">EST. TRUCK LOAD WEIGHT</span>
+                  <span class="font-bold text-cyan-300 text-sm" id="invSumWeight">21.60 Metric Tonnes</span>
+                </div>
+                <div class="p-2 rounded bg-slate-900/90 border border-slate-700">
+                  <span class="text-[10px] opacity-75 block">BROKER COMMISSION</span>
+                  <span class="font-bold text-emerald-400 text-sm" id="invSumBrokerage">₹ 6,012.00 (2.0%)</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[10px] opacity-75 uppercase mb-1">Narration / Dispatch Remarks</label>
+                <input type="text" id="invNarration" value="Dispatched via GJ-36-T-4455, Broker Rameshwar Agency (2% Comm.)" class="erp-input w-full enter-nav" />
+              </div>
+
+              <div class="flex flex-wrap items-center gap-4 pt-1 text-xs">
+                <label class="flex items-center gap-1.5 cursor-pointer text-emerald-300 font-semibold">
+                  <input type="checkbox" id="chkAutoEinvoice" checked class="accent-amber-400" />
+                  <span>Auto-Generate e-Invoice (IRN/QR)</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer text-cyan-300 font-semibold">
+                  <input type="checkbox" id="chkAutoEway" checked class="accent-amber-400" />
+                  <span>Auto-Generate e-Way Bill</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer text-amber-300 font-semibold">
+                  <input type="checkbox" id="chkAutoWhatsapp" checked class="accent-amber-400" />
+                  <span>Auto-Send PDF on Party &amp; Broker WhatsApp</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Right Footer: Add/Less Packaging, GST & Grand Total (5 cols) -->
+            <div class="lg:col-span-5 erp-card p-3 rounded space-y-1.5">
+              <div class="flex justify-between items-center">
+                <span class="opacity-80">Item Basic Taxable Sub-Total:</span>
+                <span class="font-bold" id="invSubTotalDisplay">₹ 2,99,100.00</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="opacity-80">Add: Packaging / Strapping Charges (₹):</span>
+                <input type="number" id="invPackagingAmt" value="1500" oninput="recalculateInvoice()" class="erp-input w-28 text-right font-bold enter-nav" />
+              </div>
+              <div class="flex justify-between items-center border-t border-slate-700 pt-1">
+                <span class="font-bold text-amber-300">Net Taxable Value:</span>
+                <span class="font-bold text-amber-300" id="invNetTaxableDisplay">₹ 3,00,600.00</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="opacity-80">Add: Output CGST (9.00%):</span>
+                <span id="invCgstDisplay">₹ 27,054.00</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="opacity-80">Add: Output SGST (9.00%):</span>
+                <span id="invSgstDisplay">₹ 27,054.00</span>
+              </div>
+              <div class="flex justify-between items-center text-[11px] opacity-75">
+                <span>Kasar / Round-Off (+/-):</span>
+                <span id="invRoundOffDisplay">₹ 0.00</span>
+              </div>
+              <div class="flex justify-between items-center border-t-2 border-amber-400 pt-2 mt-1">
+                <span class="text-sm font-extrabold text-amber-300">GRAND TOTAL (₹):</span>
+                <span class="text-xl font-extrabold text-emerald-400" id="invGrandTotalDisplay">₹ 3,54,708.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Function Key Action Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-slate-700 font-mono-erp text-xs">
+            <div class="flex flex-wrap items-center gap-2">
+              <button onclick="openMasterModal('party')" class="erp-btn px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded">[F3] New Master</button>
+              <button onclick="toggleCalculator()" class="erp-btn px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded">[F9] Calc</button>
+              <button onclick="resetSampleInvoice()" class="erp-btn px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded">Reset Demo Values</button>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button onclick="openPrintModal('invoice')" class="erp-btn px-4 py-2 bg-purple-700 hover:bg-purple-600 text-white font-bold rounded">
+                🖨️ [Alt+P] Print / E-Invoice QR / WhatsApp
+              </button>
+              <button onclick="saveSalesInvoice()" class="erp-btn px-5 py-2 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold rounded shadow-lg">
+                ✓ [Ctrl+A] Save Voucher
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SCREEN 5: TRADITIONAL GUJARATI ROJMEL (CASH/DAY BOOK) & QUICK ENTRY
+         ======================================================================== -->
+    <section id="screen-5" class="screen-view hidden">
+      <div class="erp-panel rounded shadow-2xl overflow-hidden border-2 border-emerald-400/80">
+        <!-- Rojmel Header -->
+        <div class="bg-slate-950 text-emerald-300 px-3.5 py-2 flex flex-wrap items-center justify-between border-b border-slate-700 font-mono-erp text-xs gap-2">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 bg-emerald-400 text-slate-950 font-extrabold rounded">F5 / F6</span>
+            <h2 class="font-bold text-sm tracking-wide" data-i18n="s5_title">ROJMEL / QUICK CASH &amp; BANK BOOK (દેશી નામા રોજમેળ - આવક / જાવક)</h2>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-amber-300 font-bold">Date (F2): <span id="rojmelDateDisplay">14/11/2026</span></span>
+            <span class="text-xs text-slate-300 hidden sm:inline">Press <kbd class="text-amber-300">Tab</kbd> on any row to toggle Audit Mark (✓)</span>
+          </div>
+        </div>
+
+        <div class="p-3 space-y-3">
+          <!-- Single-Line Rapid Quick Entry Bar (F3 toggles Receipt/Payment, F4 toggles Cash/Bank) -->
+          <div class="erp-card p-3 rounded border-2 border-amber-400/60">
+            <div class="flex flex-wrap items-center justify-between mb-2 font-mono-erp text-xs gap-2">
+              <span class="font-bold text-amber-300">⚡ QUICK VOUCHER ENTRY BAR (100% KEYBOARD NUMPAD + ENTER FLOW)</span>
+              <div class="flex items-center gap-2">
+                <button onclick="toggleRojmelBook()" class="erp-btn px-2.5 py-0.5 bg-cyan-900 text-cyan-200 border border-cyan-500 rounded text-[11px]">
+                  [F4] Toggle Book: <strong id="rojmelActiveBookLabel">MAIN CASH A/C (રોકડ ખાતું)</strong>
+                </button>
+                <button onclick="toggleRojmelEntryType()" class="erp-btn px-2.5 py-0.5 bg-emerald-900 text-emerald-200 border border-emerald-500 rounded text-[11px]">
+                  [F3] Switch Type: <strong id="rojmelActiveTypeLabel">RECEIPT (આવક / JAMA)</strong>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 items-end font-mono-erp text-xs">
+              <div class="lg:col-span-2">
+                <label class="block text-[10px] opacity-75">Type (F3)</label>
+                <select id="rojmelInputType" onchange="syncRojmelTypeDropdown()" class="erp-input w-full font-bold text-emerald-300">
+                  <option value="RECEIPT">RECEIPT (આવક)</option>
+                  <option value="PAYMENT">PAYMENT (જાવક)</option>
+                </select>
+              </div>
+              <div class="lg:col-span-4">
+                <label class="block text-[10px] opacity-75">Party / Expense Khata Name (F3: New)</label>
+                <input type="text" id="rojmelInputParty" list="rojmelPartyDatalist" placeholder="Type Party or Khata Name..." value="Somany Ceramic Traders" class="erp-input w-full font-bold" />
+                <datalist id="rojmelPartyDatalist">
+                  <option value="Uma Sanitaryware LLP"></option>
+                  <option value="Patel Tiles Mart - Ahmedabad"></option>
+                  <option value="PGVCL Factory Electricity Bill"></option>
+                  <option value="Rameshwar Agency (Brokerage)"></option>
+                  <option value="Tea & Office Kharch A/c"></option>
+                  <option value="Morbi Roadlines Freight A/c"></option>
+                </datalist>
+              </div>
+              <div class="lg:col-span-2">
+                <label class="block text-[10px] opacity-75">Amount (₹)</label>
+                <input type="number" id="rojmelInputAmt" value="25000" placeholder="0.00" class="erp-input w-full text-right font-bold text-amber-300" />
+              </div>
+              <div class="lg:col-span-1">
+                <label class="block text-[10px] opacity-75">Kasar (₹)</label>
+                <input type="number" id="rojmelInputKasar" value="0" class="erp-input w-full text-right" />
+              </div>
+              <div class="lg:col-span-2">
+                <label class="block text-[10px] opacity-75">Narration / Chq No.</label>
+                <input type="text" id="rojmelInputNarration" value="Cash Received against Bill" onkeydown="if(event.key==='Enter') addRojmelEntry()" class="erp-input w-full" />
+              </div>
+              <div class="lg:col-span-1">
+                <button onclick="addRojmelEntry()" class="erp-btn w-full py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold rounded">
+                  Save ↵
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Traditional Two-Sided Rojmel Split Grid (Left = Aavvak / Jama, Right = Javak / Udhar) -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 font-mono-erp">
+            <!-- LEFT PANE: AAVVAK / JAMA (RECEIPTS - આવક) -->
+            <div class="erp-card rounded overflow-hidden flex flex-col justify-between border border-emerald-500/50">
+              <div>
+                <div class="bg-emerald-950 text-emerald-300 px-3 py-2 font-bold text-xs flex justify-between items-center border-b border-emerald-700">
+                  <span data-i18n="rojmel_left_header">AAVVAK / JAMA (RECEIPTS — આવક / જમા બાજુ)</span>
+                  <span class="text-[11px]">Dr Cash</span>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full erp-table text-xs">
+                    <thead>
+                      <tr>
+                        <th class="w-12 text-center">Audit</th>
+                        <th class="w-14 text-center">V.No</th>
+                        <th class="text-left">Particulars (વિગત)</th>
+                        <th class="w-16 text-right">Kasar</th>
+                        <th class="w-28 text-right">Amount (₹)</th>
+                        <th class="w-10 text-center">Del</th>
+                      </tr>
+                    </thead>
+                    <tbody id="rojmelReceiptsBody">
+                      <!-- Rendered via JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="p-2.5 bg-slate-950 border-t border-slate-700 flex justify-between items-center text-xs font-bold">
+                <span class="text-emerald-300" data-i18n="rojmel_total_aavvak">Total Aavvak (કુલ આવક સરવાળો):</span>
+                <span class="text-emerald-400 text-sm" id="rojmelTotalReceipts">₹ 1,85,400.00</span>
+              </div>
+            </div>
+
+            <!-- RIGHT PANE: JAVAK / UDHAR (PAYMENTS - જાવક) -->
+            <div class="erp-card rounded overflow-hidden flex flex-col justify-between border border-rose-500/50">
+              <div>
+                <div class="bg-rose-950 text-rose-200 px-3 py-2 font-bold text-xs flex justify-between items-center border-b border-rose-700">
+                  <span data-i18n="rojmel_right_header">JAVAK / UDHAR (PAYMENTS — જાવક / ઉધાર બાજુ)</span>
+                  <span class="text-[11px]">Cr Cash</span>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full erp-table text-xs">
+                    <thead>
+                      <tr>
+                        <th class="w-12 text-center">Audit</th>
+                        <th class="w-14 text-center">V.No</th>
+                        <th class="text-left">Particulars (વિગત)</th>
+                        <th class="w-16 text-right">Kasar</th>
+                        <th class="w-28 text-right">Amount (₹)</th>
+                        <th class="w-10 text-center">Del</th>
+                      </tr>
+                    </thead>
+                    <tbody id="rojmelPaymentsBody">
+                      <!-- Rendered via JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="p-2.5 bg-slate-950 border-t border-slate-700 space-y-1 text-xs font-bold">
+                <div class="flex justify-between items-center text-rose-300">
+                  <span data-i18n="rojmel_total_javak">Total Javak (કુલ જાવક ખર્ચ):</span>
+                  <span id="rojmelTotalPayments">₹ 52,200.00</span>
+                </div>
+                <div class="flex justify-between items-center text-amber-300 border-t border-slate-800 pt-1 text-sm">
+                  <span data-i18n="rojmel_closing_silak">Closing Cash Balance (આજની બંધ સિલક):</span>
+                  <span id="rojmelClosingBalance">₹ 1,33,200.00 Dr</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rojmel Action Footer -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1 font-mono-erp text-xs">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-slate-900 rounded border border-slate-700">[Tab / Click] Toggle Audit Tick (✓)</span>
+              <span class="px-2 py-1 bg-slate-900 rounded border border-slate-700">[F3] Receipt ↔ Payment</span>
+              <span class="px-2 py-1 bg-slate-900 rounded border border-slate-700">[F4] Cash ↔ Bank</span>
+            </div>
+            <button onclick="openPrintModal('rojmel')" class="erp-btn px-4 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold rounded">
+              🖨️ [Ctrl+P] Print Gujarati Rojmel PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SCREEN 6: CA AUDITOR MULTI-TENANT SUITE & SMART GSTR-2B AI MATCHER
+         ======================================================================== -->
+    <section id="screen-6" class="screen-view hidden">
+      <div class="erp-panel rounded shadow-2xl overflow-hidden border-2 border-purple-400/80">
+        <!-- CA Suite Header -->
+        <div class="bg-slate-950 text-purple-300 px-3.5 py-2.5 flex flex-wrap items-center justify-between border-b border-slate-700 font-mono-erp text-xs gap-2">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 bg-purple-400 text-slate-950 font-extrabold rounded">FREE CA PARTNER EDITION</span>
+            <h2 class="font-bold text-sm tracking-wide" data-i18n="s6_title">CA AUDITOR PRACTICE SUITE — MULTI-CLIENT GSTR-2B AI RECONCILER</h2>
+          </div>
+          <span class="text-amber-300 font-bold">Practice Firm: M/S SHAH &amp; CO. (CHARTERED ACCOUNTANTS, MORBI)</span>
+        </div>
+
+        <div class="p-3.5 space-y-3.5 font-mono-erp">
+          <!-- Client Switcher Bar (F10) & Sync Status -->
+          <div class="erp-card p-3 rounded flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border border-purple-500/40">
+            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+              <label class="text-xs font-bold text-amber-300 shrink-0">[F10] Active Client Company:</label>
+              <select id="caClientDropdown" onchange="switchActiveCompany(this.value)" class="erp-input font-bold text-sm min-w-[320px]">
+                <option value="0">014 - ROYAL CERAMICS PVT LTD (24AABCR9988D1Z1)</option>
+                <option value="1">018 - UMA SANITARYWARE LLP (24AAACU4412B1Z9)</option>
+                <option value="2">022 - KHODIYAR PACKAGING IND. (24AABFK8821C1Z4)</option>
+                <option value="3">031 - MORBI ROADLINES &amp; LOGISTICS (24AAAFM1190E1Z2)</option>
+              </select>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 text-xs">
+              <span class="text-emerald-400">● Live Factory Sync: <strong>2 mins ago</strong></span>
+              <span class="text-cyan-300">Return Period: <strong>Oct-2026</strong></span>
+              <button onclick="switchScreen(2)" class="erp-btn px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded">
+                📥 Import Another Miracle .ZIP
+              </button>
+            </div>
+          </div>
+
+          <!-- GSTR-2B vs Purchase Register AI Reconciler Table -->
+          <div class="erp-card p-3 rounded space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="text-xs font-bold text-amber-300 uppercase">
+                  GSTR-2B vs. PURCHASE REGISTER AI RECONCILER (FUZZY PREFIX &amp; ROUND-OFF ENGINE)
+                </h3>
+                <p class="text-[11px] opacity-80">Automatically matches `INV/26-27/042` with `42`, flags missing purchase bills, and holds ITC for non-filers.</p>
+              </div>
+              <!-- Filter Pills -->
+              <div class="flex items-center gap-1.5 text-xs">
+                <button onclick="filterGstr2b('ALL')" class="erp-btn px-2.5 py-1 bg-slate-800 text-amber-300 rounded">All (5)</button>
+                <button onclick="filterGstr2b('AI-MATCH')" class="erp-btn px-2.5 py-1 bg-emerald-950 text-emerald-300 rounded">AI-Matched (3)</button>
+                <button onclick="filterGstr2b('MISSING')" class="erp-btn px-2.5 py-1 bg-amber-950 text-amber-300 rounded">In 2B Only (1)</button>
+                <button onclick="filterGstr2b('HOLD')" class="erp-btn px-2.5 py-1 bg-rose-950 text-rose-300 rounded">Hold ITC (1)</button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full erp-table text-xs">
+                <thead>
+                  <tr>
+                    <th class="w-10 text-center">Sel</th>
+                    <th class="text-left">Supplier Name &amp; GSTIN</th>
+                    <th class="text-left">GSTR-2B Portal InvNo</th>
+                    <th class="text-left">Books Purchase InvNo</th>
+                    <th class="text-right">Taxable (₹)</th>
+                    <th class="text-right">IGST/CGST+SGST</th>
+                    <th class="text-right">Round Diff</th>
+                    <th class="text-center">GSTR-1 Status</th>
+                    <th class="text-center">AI Match Status</th>
+                  </tr>
+                </thead>
+                <tbody id="gstr2bTableBody">
+                  <!-- Rendered dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- ITC Summary Bar -->
+            <div class="p-2.5 rounded bg-slate-950 border border-slate-700 flex flex-wrap items-center justify-between gap-2 text-xs">
+              <div class="flex flex-wrap items-center gap-4">
+                <span>Eligible ITC Sec 16(2): <strong class="text-emerald-400" id="caItcEligibleDisplay">₹ 14,82,100.00</strong></span>
+                <span>Missing in Books (Claimable): <strong class="text-amber-300" id="caItcMissingDisplay">₹ 45,200.00</strong></span>
+                <span>Blocked / Hold ITC (Supplier Not Filed): <strong class="text-rose-400">₹ 12,800.00</strong></span>
+              </div>
+              <span class="text-[11px] text-cyan-300">Fuzzy Tolerance: ± ₹ 2.00 Auto-Kasar</span>
+            </div>
+          </div>
+
+          <!-- 4 One-Click CA Audit Action Cards -->
+          <div>
+            <div class="text-xs font-bold text-amber-300 uppercase mb-2">CA AUDIT &amp; STATUTORY ACTIONS (1-CLICK EXECUTION):</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
+              <button onclick="postMissing2bEntries()" id="btnPostMissing2b" class="erp-btn p-3 rounded bg-amber-400/15 hover:bg-amber-400/25 border-2 border-amber-400 text-left flex flex-col justify-between">
+                <div class="font-bold text-amber-300">[1] Post Missing 2B Entries (Insert)</div>
+                <p class="text-[11px] opacity-85 mt-1">Auto-creates Purchase Voucher for Ashapura Clay (AC-884) &amp; updates ITC.</p>
+              </button>
+
+              <button onclick="triggerGstrJsonModal()" class="erp-btn p-3 rounded bg-emerald-400/15 hover:bg-emerald-400/25 border border-emerald-400 text-left flex flex-col justify-between">
+                <div class="font-bold text-emerald-300">[2] Generate GSTR-3B &amp; GSTR-1 JSON</div>
+                <p class="text-[11px] opacity-85 mt-1">1-Click ready-to-upload GST Portal JSON file with HSN summary.</p>
+              </button>
+
+              <button onclick="triggerTallyXmlModal()" class="erp-btn p-3 rounded bg-cyan-400/15 hover:bg-cyan-400/25 border border-cyan-400 text-left flex flex-col justify-between">
+                <div class="font-bold text-cyan-300">[3] Export Tally XML / Winman ITR</div>
+                <p class="text-[11px] opacity-85 mt-1">Exports 100% mapped Masters &amp; Vouchers for Tax Audit certification.</p>
+              </button>
+
+              <button onclick="toggleCaAuditLockModal()" id="btnCaSuiteLockCard" class="erp-btn p-3 rounded bg-purple-400/15 hover:bg-purple-400/25 border border-purple-400 text-left flex flex-col justify-between">
+                <div class="font-bold text-purple-300">[4] [F12] LOCK PERIOD (Oct-2026)</div>
+                <p class="text-[11px] opacity-85 mt-1" id="caLockCardDesc">Freeze factory billing edits for Oct-2026 (Requires CA OTP to unlock).</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       3. FLOATING INLINE CALCULATOR WIDGET (F9)
+       ========================================================================== -->
+  <div id="floatingCalculator" class="hidden fixed bottom-12 right-4 w-72 bg-slate-950 border-2 border-amber-400 rounded shadow-2xl z-50 font-mono-erp text-xs">
+    <div class="bg-amber-400 text-slate-950 px-3 py-1.5 font-extrabold flex items-center justify-between">
+      <span>[F9] INLINE CALCULATOR</span>
+      <button onclick="toggleCalculator()" class="px-1.5 bg-slate-950 text-amber-300 rounded">✕</button>
+    </div>
+    <div class="p-3 space-y-2">
+      <input type="text" id="calcExpression" placeholder="e.g. 500 * 1.44 * 280" onkeydown="if(event.key==='Enter') evaluateCalc()" class="erp-input w-full text-right text-sm font-bold" />
+      <div class="flex justify-between items-center bg-slate-900 px-2.5 py-1.5 rounded border border-slate-700">
+        <span class="text-slate-400">Result:</span>
+        <span id="calcResultDisplay" class="text-base font-extrabold text-emerald-400">201600.00</span>
+      </div>
+      <div class="grid grid-cols-4 gap-1 text-center font-bold">
+        <button onclick="appendCalc('7')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">7</button>
+        <button onclick="appendCalc('8')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">8</button>
+        <button onclick="appendCalc('9')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">9</button>
+        <button onclick="appendCalc('/')" class="p-1.5 bg-cyan-900 text-cyan-200 rounded">÷</button>
+        <button onclick="appendCalc('4')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">4</button>
+        <button onclick="appendCalc('5')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">5</button>
+        <button onclick="appendCalc('6')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">6</button>
+        <button onclick="appendCalc('*')" class="p-1.5 bg-cyan-900 text-cyan-200 rounded">×</button>
+        <button onclick="appendCalc('1')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">1</button>
+        <button onclick="appendCalc('2')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">2</button>
+        <button onclick="appendCalc('3')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">3</button>
+        <button onclick="appendCalc('-')" class="p-1.5 bg-cyan-900 text-cyan-200 rounded">−</button>
+        <button onclick="clearCalc()" class="p-1.5 bg-rose-900 text-rose-200 rounded">C</button>
+        <button onclick="appendCalc('0')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">0</button>
+        <button onclick="appendCalc('.')" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded">.</button>
+        <button onclick="appendCalc('+')" class="p-1.5 bg-cyan-900 text-cyan-200 rounded">+</button>
+      </div>
+      <button onclick="evaluateCalc()" class="w-full py-1.5 bg-amber-400 text-slate-950 font-extrabold rounded">Calculate (=)</button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       4. GLOBAL MODALS (F3 MASTER CREATION, ALT+P PRINT/WA, LEDGER, JSON/XML, LOCK)
+       ========================================================================== -->
+
+  <!-- MODAL A: F3 ON-THE-FLY MASTER CREATION (PARTY ACCOUNT OR CERAMIC ITEM) -->
+  <div id="modalMasterCreation" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center p-3 z-50">
+    <div class="erp-panel w-full max-w-2xl rounded shadow-2xl border-2 border-amber-400 overflow-hidden font-mono-erp text-xs">
+      <div class="bg-slate-950 text-amber-300 px-4 py-2.5 flex items-center justify-between border-b border-slate-700">
+        <span class="font-bold text-sm">[F3] INSTANT ON-THE-FLY MASTER CREATION (WITHOUT LEAVING VOUCHER)</span>
+        <button onclick="closeAllModals()" class="px-2 py-0.5 bg-rose-900 text-white rounded">Esc ✕</button>
+      </div>
+
+      <!-- Tabs: Party Master vs Ceramic Item Master -->
+      <div class="flex border-b border-slate-700 bg-slate-900">
+        <button onclick="switchMasterTab('party')" id="tabBtnMasterParty" class="flex-1 py-2 font-bold bg-amber-400 text-slate-950">
+          1. Create Party / Khata Master (With Live GSTIN Verify)
+        </button>
+        <button onclick="switchMasterTab('item')" id="tabBtnMasterItem" class="flex-1 py-2 font-bold text-slate-300 hover:text-white">
+          2. Create Ceramic Tile Item (Box ↔ Sq.Mt Formula)
+        </button>
+      </div>
+
+      <!-- Tab 1 Content: Party Master -->
+      <div id="masterTabPartyContent" class="p-4 space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center">
+          <label class="sm:col-span-4 font-bold">15-Digit GSTIN No:</label>
+          <div class="sm:col-span-8 flex gap-2">
+            <input type="text" id="newPartyGstin" value="27AAACR5055K1Z7" class="erp-input w-full uppercase font-bold text-amber-300" />
+            <button onclick="verifyGstinPortal()" class="erp-btn px-3 py-1 bg-emerald-500 text-slate-950 font-extrabold rounded shrink-0">
+              1-Click GST Portal Auto-Fill
+            </button>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center">
+          <label class="sm:col-span-4 font-bold">Party / Account Name:</label>
+          <div class="sm:col-span-8">
+            <input type="text" id="newPartyName" value="RAJESHWARI MARBLE & GRANITE - MUMBAI" class="erp-input w-full font-bold" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center">
+          <label class="sm:col-span-4 font-bold">Gujarati Alias (ગુજરાતી નામ):</label>
+          <div class="sm:col-span-8">
+            <input type="text" id="newPartyGuj" value="રાજેશ્વરી માર્બલ એન્ડ ગ્રેનાઈટ" class="erp-input w-full" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div>
+            <label class="block text-[10px] opacity-75">Account Group</label>
+            <select id="newPartyGroup" class="erp-input w-full">
+              <option>Sundry Debtors (Customer)</option>
+              <option>Sundry Creditors (Supplier)</option>
+              <option>Bank OCC A/c</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] opacity-75">Opening Balance (₹)</label>
+            <input type="number" id="newPartyOpBal" value="150000" class="erp-input w-full text-right font-bold" />
+          </div>
+          <div>
+            <label class="block text-[10px] opacity-75">WhatsApp Mobile No.</label>
+            <input type="text" id="newPartyMobile" value="+91 98201 55442" class="erp-input w-full" />
+          </div>
+        </div>
+        <div class="pt-2 flex justify-end gap-2 border-t border-slate-700">
+          <button onclick="closeAllModals()" class="erp-btn px-4 py-1.5 bg-slate-800 rounded">Cancel (Esc)</button>
+          <button onclick="saveNewPartyMaster()" class="erp-btn px-5 py-1.5 bg-amber-400 text-slate-950 font-extrabold rounded">
+            ✓ Save Party &amp; Select in Bill (Ctrl+A)
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 2 Content: Ceramic Item Master -->
+      <div id="masterTabItemContent" class="hidden p-4 space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[10px] opacity-75">Tile Design / Size Name</label>
+            <input type="text" id="newItemName" value="800x1600 CARVINGTON MARBLE" class="erp-input w-full font-bold text-amber-300" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] opacity-75">HSN Code</label>
+              <input type="text" id="newItemHsn" value="690721" class="erp-input w-full" />
+            </div>
+            <div>
+              <label class="block text-[10px] opacity-75">Grade</label>
+              <select id="newItemGrade" class="erp-input w-full">
+                <option value="PREM">PREM (Premium)</option>
+                <option value="STD">STD (Standard)</option>
+                <option value="COM">COM (Commercial)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="erp-card p-3 rounded border border-cyan-500/40">
+          <div class="text-amber-300 font-bold mb-2">CERAMIC CONVERSION FORMULA (1 BOX = X PCS = Y SQ.MT):</div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div>
+              <label class="block text-[10px] opacity-75">Pcs per Box</label>
+              <input type="number" id="newItemPcs" value="2" class="erp-input w-full text-right font-bold" />
+            </div>
+            <div>
+              <label class="block text-[10px] opacity-75">Sq.Mt per Box</label>
+              <input type="number" step="0.01" id="newItemSqmt" value="2.56" class="erp-input w-full text-right font-bold text-cyan-300" />
+            </div>
+            <div>
+              <label class="block text-[10px] opacity-75">Default Rate / Sq.Mt (₹)</label>
+              <input type="number" id="newItemRate" value="340" class="erp-input w-full text-right font-bold text-amber-300" />
+            </div>
+            <div>
+              <label class="block text-[10px] opacity-75">Opening Stock (Boxes)</label>
+              <input type="number" id="newItemStock" value="1800" class="erp-input w-full text-right font-bold" />
+            </div>
+          </div>
+        </div>
+        <div class="pt-2 flex justify-end gap-2 border-t border-slate-700">
+          <button onclick="closeAllModals()" class="erp-btn px-4 py-1.5 bg-slate-800 rounded">Cancel (Esc)</button>
+          <button onclick="saveNewItemMaster()" class="erp-btn px-5 py-1.5 bg-emerald-400 text-slate-950 font-extrabold rounded">
+            ✓ Save Ceramic Size &amp; Append to Invoice
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL B: ALT+P / CTRL+P PRINT PREVIEW (LASER PDF, DOT-MATRIX ESC/P & WHATSAPP SEND) -->
+  <div id="modalPrintPreview" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-3 z-50">
+    <div class="erp-panel w-full max-w-4xl rounded shadow-2xl border-2 border-amber-400 overflow-hidden font-mono-erp text-xs flex flex-col max-h-[90vh]">
+      <div class="bg-slate-950 text-amber-300 px-4 py-2.5 flex items-center justify-between border-b border-slate-700">
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-sm">🖨️ [Alt+P] DUAL PRINT ENGINE &amp; NATIVE WHATSAPP CLOUD DISPATCH</span>
+        </div>
+        <button onclick="closeAllModals()" class="px-2 py-0.5 bg-rose-900 text-white rounded">Esc ✕</button>
+      </div>
+
+      <!-- Format Switcher Bar -->
+      <div class="bg-slate-900 px-4 py-2 flex flex-wrap items-center justify-between gap-2 border-b border-slate-700">
+        <div class="flex items-center gap-2">
+          <button onclick="switchPrintFormat('laser')" id="btnPrintLaser" class="px-3 py-1 rounded bg-amber-400 text-slate-950 font-extrabold">
+            1. Graphical Laser GST Invoice (With IRN QR)
+          </button>
+          <button onclick="switchPrintFormat('dotmatrix')" id="btnPrintDotMatrix" class="px-3 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">
+            2. Dot-Matrix RAW ESC/P Gate Challan (Epson/TVS)
+          </button>
+        </div>
+        <button onclick="sendWhatsAppDirect()" class="erp-btn px-3.5 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold rounded">
+          📲 [Alt+W] 1-Click Send PDF on WhatsApp
+        </button>
+      </div>
+
+      <!-- Printable Preview Body -->
+      <div class="p-4 overflow-y-auto flex-1 bg-slate-900/60" id="printPreviewContainer">
+        <!-- Populated dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL C: ACCOUNT LEDGER (KHATA-VAHI) & BILL RECEIVABLE AGING MODAL -->
+  <div id="modalLedgerAging" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-3 z-50">
+    <div class="erp-panel w-full max-w-4xl rounded shadow-2xl border-2 border-cyan-400 overflow-hidden font-mono-erp text-xs flex flex-col max-h-[88vh]">
+      <div class="bg-slate-950 text-cyan-300 px-4 py-2.5 flex items-center justify-between border-b border-slate-700">
+        <span class="font-bold text-sm" id="ledgerModalTitle">KHATA-VAHI (PARTY LEDGER) &amp; BILL-BY-BILL AGING</span>
+        <div class="flex items-center gap-2">
+          <button onclick="sendBatchWhatsAppReminders()" class="px-3 py-1 bg-emerald-500 text-slate-950 font-extrabold rounded">📲 [Alt+W] Send WhatsApp Ugrani Reminder</button>
+          <button onclick="closeAllModals()" class="px-2 py-0.5 bg-rose-900 text-white rounded">Esc ✕</button>
+        </div>
+      </div>
+      <div class="p-4 overflow-y-auto space-y-3" id="ledgerModalBody">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL D: F10 QUICK CLIENT / COMPANY SWITCHER -->
+  <div id="modalClientSwitcher" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center p-3 z-50">
+    <div class="erp-panel w-full max-w-xl rounded shadow-2xl border-2 border-emerald-400 overflow-hidden font-mono-erp text-xs">
+      <div class="bg-slate-950 text-emerald-300 px-4 py-2.5 flex items-center justify-between border-b border-slate-700">
+        <span class="font-bold text-sm">[F10] MULTI-COMPANY / CA CLIENT SWITCHER</span>
+        <button onclick="closeAllModals()" class="px-2 py-0.5 bg-rose-900 text-white rounded">Esc ✕</button>
+      </div>
+      <div class="p-3 space-y-2">
+        <p class="text-[11px] opacity-80">Select any client company below to switch ledgers instantaneously (SQLite Zero-Latency):</p>
+        <div class="space-y-1.5" id="clientSwitcherList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL E: F2 CHANGE DATE / PERIOD MODAL -->
+  <div id="modalDateChange" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center p-3 z-50">
+    <div class="erp-panel w-full max-w-md rounded shadow-2xl border-2 border-amber-400 overflow-hidden font-mono-erp text-xs">
+      <div class="bg-slate-950 text-amber-300 px-4 py-2 flex items-center justify-between border-b border-slate-700">
+        <span class="font-bold">[F2] CHANGE VOUCHER DATE / PERIOD</span>
+        <button onclick="closeAllModals()" class="px-2 py-0.5 bg-rose-900 text-white rounded">Esc ✕</button>
+      </div>
+      <div class="p-4 space-y-3">
+        <div>
+          <label class="block text-[11px] mb-1">Active Voucher Date (DD/MM/YYYY):</label>
+          <input type="text" id="inputModalGlobalDate" value="14/11/2026" class="erp-input w-full font-bold text-sm" />
+        </div>
+        <div class="flex justify-end gap-2">
+          <button onclick="applyGlobalDateChange()" class="erp-btn px-4 py-1.5 bg-amber-400 text-slate-950 font-extrabold rounded">Apply Date (Enter)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL F: F12 CA PERIOD AUDIT LOCK / OTP MODAL -->
+  <div id="modalAuditLock" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center p-3 z-50">
+    <div class="erp-panel w-full max-w-md rounded shadow-2xl border-2 border-purple-400 overflow-hidden font-mono-erp text-xs">
+      <div class="bg-slate-950 text-purple-300 px-4 py-2.5 flex items-center justify-between border-b border-slate-700">
+        <span class="font-bold">[F12] CA PERIOD AUDIT LOCK (FREEZE FACTORY EDITS)</span>
+        <button onclick="closeAllModals()" class="px-2 py-0.5 bg-rose-900 text-white rounded">Esc ✕</button>
+      </div>
+      <div class="p-4 space-y-3">
+        <p class="leading-relaxed">
+          When locked by the CA after GSTR-1/3B filing, factory operators can view invoices but <strong>cannot alter or delete vouchers</strong> without the CA's override PIN.
+        </p>
+        <div>
+          <label class="block text-[11px] mb-1">CA Audit Override PIN (Default Demo PIN: <code class="text-amber-300">1234</code>):</label>
+          <input type="password" id="inputCaAuditPin" value="1234" class="erp-input w-full text-center font-bold tracking-widest text-base" />
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeAllModals()" class="erp-btn px-3 py-1.5 bg-slate-800 rounded">Cancel</button>
+          <button onclick="confirmToggleAuditLock()" class="erp-btn px-4 py-1.5 bg-purple-400 text-slate-950 font-extrabold rounded">
+            Toggle Audit Lock Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL G: GENERIC CODE/GRAPH/HAVALA VIEWER (TALLY XML, GSTR JSON, CTRL+G GRAPH) -->
+  <div id="modalGenericViewer" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-3 z-50">
+    <div class="erp-panel w-full max-w-3xl rounded shadow-2xl border-2 border-amber-400 overflow-hidden font-mono-erp text-xs">
+      <div class="bg-slate-950 text-amber-300 px-4 py-2.5 flex items-center justify-between border-b border-slate-700">
+        <span class="font-bold text-sm" id="genericModalTitle">EXPORT PREVIEW</span>
+        <button onclick="closeAllModals()" class="px-2 py-0.5 bg-rose-900 text-white rounded">Esc ✕</button>
+      </div>
+      <div class="p-4 space-y-3" id="genericModalContent"></div>
+    </div>
+  </div>
+
+  <!-- NON-BLOCKING ERP STATUS TOAST -->
+  <div id="erpToast" class="hidden fixed top-14 right-4 max-w-md bg-slate-950 text-amber-300 border-2 border-amber-400 px-4 py-2.5 rounded shadow-2xl font-mono-erp text-xs z-50 flex items-center gap-2.5">
+    <span class="text-base">⚡</span>
+    <span id="erpToastText" class="font-bold">Action completed</span>
+  </div>
+
+  <!-- ==========================================================================
+       5. PERSISTENT BOTTOM FUNCTION-KEY RIBBON (ZERO LEARNING CURVE BAR)
+       ========================================================================== -->
+  <footer class="bg-slate-950 text-slate-200 px-2 py-1 border-t border-slate-700 shrink-0 font-mono-erp text-[11px] flex flex-wrap items-center justify-between gap-1 select-none">
+    <div class="flex items-center gap-1 overflow-x-auto">
+      <button onclick="openModal('modalDateChange')" class="px-2 py-0.5 bg-slate-800 hover:bg-amber-400 hover:text-slate-950 rounded transition"><strong class="text-amber-300">F2</strong>:Date</button>
+      <button onclick="openMasterModal('party')" class="px-2 py-0.5 bg-slate-800 hover:bg-amber-400 hover:text-slate-950 rounded transition"><strong class="text-amber-300">F3</strong>:+Master</button>
+      <button onclick="switchScreen(5)" class="px-2 py-0.5 bg-slate-800 hover:bg-amber-400 hover:text-slate-950 rounded transition"><strong class="text-amber-300">F5</strong>:Rojmel</button>
+      <button onclick="openHavalaModal()" class="px-2 py-0.5 bg-slate-800 hover:bg-amber-400 hover:text-slate-950 rounded transition"><strong class="text-amber-300">F7</strong>:Havala</button>
+      <button onclick="switchScreen(4)" class="px-2 py-0.5 bg-slate-800 hover:bg-amber-400 hover:text-slate-950 rounded transition"><strong class="text-amber-300">F8</strong>:Sales</button>
+      <button onclick="toggleCalculator()" class="px-2 py-0.5 bg-slate-800 hover:bg-amber-400 hover:text-slate-950 rounded transition"><strong class="text-amber-300">F9</strong>:Calc</button>
+      <button onclick="openModal('modalClientSwitcher')" class="px-2 py-0.5 bg-slate-800 hover:bg-amber-400 hover:text-slate-950 rounded transition"><strong class="text-amber-300">F10</strong>:Clients</button>
+      <button onclick="toggleCaAuditLockModal()" class="px-2 py-0.5 bg-slate-800 hover:bg-amber-400 hover:text-slate-950 rounded transition"><strong class="text-amber-300">F12</strong>:CA-Lock</button>
+      <button onclick="openPrintModal()" class="px-2 py-0.5 bg-slate-800 hover:bg-amber-400 hover:text-slate-950 rounded transition"><strong class="text-amber-300">Alt+P</strong>:Print/WA</button>
+      <button onclick="openGraphModal()" class="px-2 py-0.5 bg-slate-800 hover:bg-amber-400 hover:text-slate-950 rounded transition"><strong class="text-amber-300">Ctrl+G</strong>:Graph</button>
+    </div>
+    <div class="hidden md:flex items-center gap-3 text-[11px]">
+      <span class="text-emerald-400">● LAN: 4 Seats</span>
+      <span class="text-cyan-300">● WhatsApp API: Ready</span>
+      <span class="text-amber-300">Esc: Back to M-Desktop</span>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       6. COMPLETE APPLICATION STATE & INTERACTIVE ENGINE (JAVASCRIPT)
+       ========================================================================== -->
+  <script>
+    // --------------------------------------------------------------------------
+    // GLOBAL ERP STATE
+    // --------------------------------------------------------------------------
+    const state = {
+      currentScreen: 3, // Starts on M-Desktop Workspace so user sees ERP immediately, or can click Tab 1-6
+      skin: 'miracle',  // 'miracle' | 'sava'
+      lang: 'en',       // 'en' | 'gu' | 'hi'
+      activeDate: '14/11/2026',
+      caAuditLocked: false,
+      activeMenuIndex: 0,
+      activeCompanyIndex: 0,
+      rojmelBook: 'MAIN CASH A/C (રોકડ ખાતું)',
+      gstrFilter: 'ALL',
+
+      companies: [
+        { id: 0, code: '014', name: 'ROYAL CERAMICS PVT LTD (FY 2026-27)', gstin: '24AABCR9988D1Z1', salesToday: 1482450, cashSilak: 133200 },
+        { id: 1, code: '018', name: 'UMA SANITARYWARE LLP (FY 2026-27)', gstin: '24AAACU4412B1Z9', salesToday: 895200, cashSilak: 248900 },
+        { id: 2, code: '022', name: 'KHODIYAR PACKAGING IND. (FY 2026-27)', gstin: '24AABFK8821C1Z4', salesToday: 412000, cashSilak: 74500 },
+        { id: 3, code: '031', name: 'MORBI ROADLINES & LOGISTICS (FY 2026-27)', gstin: '24AAAFM1190E1Z2', salesToday: 329000, cashSilak: 91200 }
+      ],
+
+      parties: [
+        { id: 1, name: 'PATEL TILES MART - AHMEDABAD', guj: 'પટેલ ટાઈલ્સ માર્ટ - અમદાવાદ', gstin: '24AABCP1234A1Z5', bal: '₹ 4,12,500 Dr (Limit: ₹ 10L)', mobile: '+91 98250 11223', city: 'Ahmedabad', overdue30: 210000, overdue60: 202500 },
+        { id: 2, name: 'SOMANY CERAMIC TRADERS - SURAT', guj: 'સોમાણી સિરામિક ટ્રેડર્સ - સુરત', gstin: '24AAECS8812F1Z2', bal: '₹ 7,85,000 Dr (Limit: ₹ 15L)', mobile: '+91 98242 99881', city: 'Surat', overdue30: 500000, overdue60: 285000 },
+        { id: 3, name: 'SHREEJI INFRASTRUCTURE - RAJKOT', guj: 'શ્રીજી ઇન્ફ્રાસ્ટ્રક્ચર - રાજકોટ', gstin: '24AADCS4491E1Z8', bal: '₹ 1,90,400 Dr (Limit: ₹ 5L)', mobile: '+91 99798 77665', city: 'Rajkot', overdue30: 190400, overdue60: 0 }
+      ],
+
+      tileCatalog: [
+        { id: 1, name: '600x600 GVT STATUARIO', hsn: '690721', grade: 'PREM', pcsPerBox: 4, sqmtPerBox: 1.44, defaultRate: 280, rateBasis: 'SQMT', weightKg: 28, stockBoxes: 24500 },
+        { id: 2, name: '600x1200 HIGH GLOSS WHITE', hsn: '690721', grade: 'STD', pcsPerBox: 2, sqmtPerBox: 1.44, defaultRate: 390, rateBasis: 'BOX', weightKg: 32, stockBoxes: 14200 },
+        { id: 3, name: '800x1600 ONYX EMPERADOR', hsn: '690721', grade: 'PREM', pcsPerBox: 2, sqmtPerBox: 2.56, defaultRate: 320, rateBasis: 'SQMT', weightKg: 48, stockBoxes: 9500 }
+      ],
+
+      invoiceRows: [
+        { itemName: '600x600 GVT STATUARIO', hsn: '690721', grade: 'PREM', boxes: 500, pcsPerBox: 4, sqmtPerBox: 1.44, rateBasis: 'SQMT', rate: 280, discPct: 0, gstPct: 18 },
+        { itemName: '600x1200 HIGH GLOSS WHITE', hsn: '690721', grade: 'STD', boxes: 250, pcsPerBox: 2, sqmtPerBox: 1.44, rateBasis: 'BOX', rate: 390, discPct: 0, gstPct: 18 }
+      ],
+
+      rojmelReceipts: [
+        { id: 101, vno: 'OP', party: 'Opening Cash Balance (શરૂઆતની સિલક)', kasar: 0, amt: 120000, audited: true },
+        { id: 102, vno: '88', party: 'Uma Sanitaryware LLP (ઉમા સેનિટરીવેર)', kasar: 0, amt: 50000, audited: true },
+        { id: 103, vno: '89', party: 'Counter Cash Tile Sales (રોકડ વેચાણ)', kasar: 100, amt: 15400, audited: false }
+      ],
+
+      rojmelPayments: [
+        { id: 201, vno: '41', party: 'PGVCL Factory Electricity Bill (વીજળી બિલ)', kasar: 0, amt: 42500, audited: true },
+        { id: 202, vno: '42', party: 'Tea & Office Kharch A/c (ચા-પાણી ખર્ચ)', kasar: 0, amt: 1200, audited: false },
+        { id: 203, vno: '43', party: 'Rameshwar Agency Broker Comm. (દલાલી)', kasar: 0, amt: 8500, audited: false }
+      ],
+
+      gstr2bRows: [
+        { id: 1, supplier: 'Somany Gas & Fuels Ltd (24AAACS1122D1Z4)', portalInv: 'INV/26-27/042', booksInv: '42', taxable: 480000, tax: 86400, diff: '+0.40', filed: 'Filed (Y)', status: 'AI-MATCH', selected: true },
+        { id: 2, supplier: 'Khodiyar Corrugated Pack (24AABFK8821C1Z4)', portalInv: 'KP-2026-109', booksInv: 'KP/109', taxable: 195000, tax: 35100, diff: '0.00', filed: 'Filed (Y)', status: 'AI-MATCH', selected: true },
+        { id: 3, supplier: 'Morbi Glaze & Frits Co (24AADCM7731A1Z1)', portalInv: 'MGF/2026/881', booksInv: '881', taxable: 510000, tax: 91800, diff: '-0.25', filed: 'Filed (Y)', status: 'AI-MATCH', selected: true },
+        { id: 4, supplier: 'Ashapura Ball Clay Mines (24AABCA9920B1Z8)', portalInv: 'AC-884', booksInv: '[MISSING IN BOOKS]', taxable: 251111, tax: 45200, diff: '45,200', filed: 'Filed (Y)', status: 'MISSING', selected: true },
+        { id: 5, supplier: 'Raj Bulk Transport GTA (24AAAFR4410K1Z5)', portalInv: '[NOT IN 2B]', booksInv: 'RT-551', taxable: 106666, tax: 12800, diff: '12,800', filed: 'Not Filed', status: 'HOLD', selected: false }
+      ]
+    };
+
+    // --------------------------------------------------------------------------
+    // MULTI-LANGUAGE DICTIONARY (ENGLISH / GUJARATI / HINDI)
+    // --------------------------------------------------------------------------
+    const i18nDict = {
+      en: {
+        s1_title: 'MORBI ACCOUNTING ERP v1.0 — SYSTEM ACTIVATION WIZARD',
+        s2_title: '1-CLICK DATA MIGRATION ENGINE (MIRACLE & SHREE SAVA .DBF / .MDB)',
+        menu_tx_title: 'TRANSACTION & DESHI NAMA MENU (USE ↑/↓ & ENTER)',
+        kpi_sales: "Today's Billing (F8)",
+        kpi_cash: 'Rojmel Cash Silak (F5)',
+        kpi_debtors: 'Sundry Debtors (Ugrani)',
+        kpi_gstr: 'GSTR-2B ITC Status',
+        s4_title: 'SALES INVOICE (CERAMIC TAX INVOICE & E-WAY BILL)',
+        s5_title: 'ROJMEL / QUICK CASH & BANK BOOK (દેશી નામા રોજમેળ - આવક / જાવક)',
+        rojmel_left_header: 'AAVVAK / JAMA (RECEIPTS — આવક / જમા બાજુ)',
+        rojmel_right_header: 'JAVAK / UDHAR (PAYMENTS — જાવક / ઉધાર બાજુ)',
+        rojmel_total_aavvak: 'Total Aavvak (કુલ આવક સરવાળો):',
+        rojmel_total_javak: 'Total Javak (કુલ જાવક ખર્ચ):',
+        rojmel_closing_silak: 'Closing Cash Balance (આજની બંધ સિલક):',
+        s6_title: 'CA AUDITOR PRACTICE SUITE — MULTI-CLIENT GSTR-2B AI RECONCILER'
+      },
+      gu: {
+        s1_title: 'મોરબી એકાઉન્ટિંગ ERP v1.0 — સિસ્ટમ એક્ટિવેશન વિઝાર્ડ',
+        s2_title: '૧-ક્લિક ડેટા ટ્રાન્સફર એન્જિન (મિરેકલ અને શ્રી સવા .DBF માંથી)',
+        menu_tx_title: 'વ્યવહાર અને દેશી નામા મેનુ (↑/↓ એરો અને ENTER વાપરો)',
+        kpi_sales: 'આજનું કુલ વેચાણ બિલિંગ (F8)',
+        kpi_cash: 'રોજમેળ રોકડ સિલક (F5)',
+        kpi_debtors: 'ઉઘરાણી / દેવાદારો (Debtors)',
+        kpi_gstr: 'GSTR-2B ITC રિકન્સિલિએશન',
+        s4_title: 'સેલ્સ ઇન્વોઇસ (સિરામિક GST બિલ અને ઈ-વે બિલ - F8)',
+        s5_title: 'રોજમેળ / રોકડ અને બેંક બુક (આવક - જમા / જાવક - ઉધાર)',
+        rojmel_left_header: 'આવક / જમા બાજુ (RECEIPTS - JAMA)',
+        rojmel_right_header: 'જાવક / ઉધાર બાજુ (PAYMENTS - UDHAR)',
+        rojmel_total_aavvak: 'કુલ આવક સરવાળો (Total Receipts):',
+        rojmel_total_javak: 'કુલ જાવક સરવાળો (Total Payments):',
+        rojmel_closing_silak: 'આજની બંધ રોકડ સિલક (Closing Cash Balance):',
+        s6_title: 'CA ઓડિટર પ્રેક્ટિસ સ્યુટ — GSTR-2B AI રિકન્સિલિએશન'
+      },
+      hi: {
+        s1_title: 'मोरबी अकाउंटिंग ERP v1.0 — सिस्टम एक्टिवेशन विज़ार्ड',
+        s2_title: '1-क्लिक डेटा माइग्रेशन (मिरेकल एवं श्री सवा .DBF से)',
+        menu_tx_title: 'लेन-देन एवं बही-खाता मेनू (↑/↓ एवं ENTER का प्रयोग करें)',
+        kpi_sales: 'आज की कुल बिक्री (F8)',
+        kpi_cash: 'रोज़मेल नकद शेष (F5)',
+        kpi_debtors: 'कुल देनदार / उगाही (Debtors)',
+        kpi_gstr: 'GSTR-2B ITC मिलान स्थिति',
+        s4_title: 'बिक्री चालान (सिरेमिक टैक्स इनवॉइस एवं ई-वे बिल - F8)',
+        s5_title: 'रोज़मेल / नकद एवं बैंक बही (आवक - जमा / जावक - उधार)',
+        rojmel_left_header: 'आवक / जमा पक्ष (RECEIPTS - JAMA)',
+        rojmel_right_header: 'जावक / उधार पक्ष (PAYMENTS - UDHAR)',
+        rojmel_total_aavvak: 'कुल आवक योग (Total Receipts):',
+        rojmel_total_javak: 'कुल जावक योग (Total Payments):',
+        rojmel_closing_silak: 'आज का अंतिम नकद शेष (Closing Cash Balance):',
+        s6_title: 'CA ऑडिटर प्रैक्टिस सूट — GSTR-2B AI मिलान इंजन'
+      }
+    };
+
+    // --------------------------------------------------------------------------
+    // FORMATTERS & TOAST NOTIFICATION
+    // --------------------------------------------------------------------------
+    function formatINR(num) {
+      const n = Number(num) || 0;
+      return n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    let toastTimeout = null;
+    function showToast(msg) {
+      const toast = document.getElementById('erpToast');
+      const text = document.getElementById('erpToastText');
+      text.textContent = msg;
+      toast.classList.remove('hidden');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3200);
+    }
+
+    // --------------------------------------------------------------------------
+    // SKIN & LANGUAGE ENGINE
+    // --------------------------------------------------------------------------
+    function setSkin(skinName) {
+      state.skin = skinName;
+      const body = document.body;
+      const btnMiracle = document.getElementById('btnSkinMiracle');
+      const btnSava = document.getElementById('btnSkinSava');
+      const wizMiracle = document.getElementById('wizSkinMiracle');
+      const wizSava = document.getElementById('wizSkinSava');
+
+      if (skinName === 'sava') {
+        body.classList.add('skin-sava');
+        btnSava.className = 'px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-400 text-slate-950 transition';
+        btnMiracle.className = 'px-2 py-0.5 rounded text-[11px] font-semibold text-slate-300 hover:text-white transition';
+        if (wizSava) wizSava.checked = true;
+        showToast('Switched to Shree Sava Classic Windows ERP Skin');
+      } else {
+        body.classList.remove('skin-sava');
+        btnMiracle.className = 'px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-400 text-slate-950 transition';
+        btnSava.className = 'px-2 py-0.5 rounded text-[11px] font-semibold text-slate-300 hover:text-white transition';
+        if (wizMiracle) wizMiracle.checked = true;
+        showToast('Switched to Miracle Classic M-Desktop Skin');
+      }
+    }
+
+    function setLanguage(langCode) {
+      state.lang = langCode;
+      const dict = i18nDict[langCode] || i18nDict.en;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.textContent = dict[key];
+      });
+
+      ['en', 'gu', 'hi'].forEach(code => {
+        const btn = document.getElementById('btnLang' + code.charAt(0).toUpperCase() + code.slice(1));
+        if (btn) {
+          btn.className = (code === langCode)
+            ? 'px-1.5 py-0.5 rounded text-[11px] font-semibold bg-cyan-500 text-slate-950'
+            : 'px-1.5 py-0.5 rounded text-[11px] font-semibold text-slate-300 hover:text-white';
+        }
+      });
+      showToast(langCode === 'gu' ? 'ભાષા બદલાઈ: ગુજરાતી (Gujarati)' : langCode === 'hi' ? 'भाषा बदली गई: हिन्दी (Hindi)' : 'Language set to English');
+    }
+
+    // --------------------------------------------------------------------------
+    // SCREEN NAVIGATION ENGINE (SCREENS 1 TO 6)
+    // --------------------------------------------------------------------------
+    function switchScreen(screenNum) {
+      state.currentScreen = screenNum;
+      for (let i = 1; i <= 6; i++) {
+        const sec = document.getElementById('screen-' + i);
+        const tab = document.getElementById('navTab' + i);
+        if (sec) {
+          if (i === screenNum) sec.classList.remove('hidden');
+          else sec.classList.add('hidden');
+        }
+        if (tab) {
+          tab.className = (i === screenNum)
+            ? 'screen-tab px-2.5 py-1 rounded font-mono-erp text-xs font-extrabold bg-amber-400 text-slate-950 shadow'
+            : 'screen-tab px-2.5 py-1 rounded font-mono-erp text-xs text-slate-300 hover:bg-slate-800';
+        }
+      }
+      closeAllModals();
+
+      // Auto-focus first logical input for keyboard flow
+      setTimeout(() => {
+        if (screenNum === 4) {
+          const partySel = document.getElementById('invPartySelect');
+          if (partySel) partySel.focus();
+        } else if (screenNum === 5) {
+          const rojParty = document.getElementById('rojmelInputParty');
+          if (rojParty) rojParty.focus();
+        }
+      }, 60);
+    }
+
+    // --------------------------------------------------------------------------
+    // SCREEN 1: ACTIVATION WIZARD FUNCTIONS
+    // --------------------------------------------------------------------------
+    function selectEdition(type) {
+      const cardCA = document.getElementById('cardEditionCA');
+      const cardBiz = document.getElementById('cardEditionBiz');
+      const radioCA = document.getElementById('radioEditionCA');
+      const radioBiz = document.getElementById('radioEditionBiz');
+      const keyInput = document.getElementById('inputLicenseKey');
+
+      if (type === 'ca') {
+        radioCA.checked = true;
+        cardCA.className = 'cursor-pointer p-3.5 rounded border-2 border-amber-400 bg-emerald-950/40 transition relative';
+        cardBiz.className = 'cursor-pointer p-3.5 rounded border border-slate-600 erp-card hover:border-amber-300 transition relative';
+        keyInput.value = 'CA-MORBI-FREE-2027-X99A';
+        showToast('Selected: CA / Tax Consultant / Munim Free Partner Edition');
+      } else {
+        radioBiz.checked = true;
+        cardBiz.className = 'cursor-pointer p-3.5 rounded border-2 border-amber-400 bg-cyan-950/40 transition relative';
+        cardCA.className = 'cursor-pointer p-3.5 rounded border border-slate-600 erp-card hover:border-amber-300 transition relative';
+        keyInput.value = 'BIZ-CERAMIC-1999-M882';
+        showToast('Selected: Business / Factory Edition (₹1,999/Year)');
+      }
+    }
+
+    function copyMachineId() {
+      const input = document.getElementById('inputMachineId');
+      input.select();
+      document.execCommand('copy');
+      showToast('Copied Machine Hardware ID: ' + input.value);
+    }
+
+    function simulateWhatsAppOtp() {
+      const randomPin = Math.floor(100000 + Math.random() * 900000);
+      document.getElementById('inputOfflinePin').value = randomPin;
+      showToast('WhatsApp Bot Reply for ACT MRB-8F92: Unlock PIN ' + randomPin + ' auto-filled!');
+    }
+
+    function completeActivationStep() {
+      showToast('Hardware License Activated! Opening Step 2: 1-Click Migration...');
+      switchScreen(2);
+      runOneClickMigration();
+    }
+
+    // --------------------------------------------------------------------------
+    // SCREEN 2: 1-CLICK MIGRATION ENGINE FUNCTIONS
+    // --------------------------------------------------------------------------
+    function toggleMigrationSource(idx) {
+      const chk = document.getElementById('migChk' + idx);
+      if (chk) chk.checked = !chk.checked;
+    }
+
+    function simulateBackupDrop() {
+      const tbody = document.getElementById('migrationSourcesBody');
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td class="text-center"><input type="checkbox" checked class="accent-amber-400" /></td>
+        <td class="font-bold text-amber-300">3. WHATSAPP CLIENT ZIP</td>
+        <td><code>C:\\Downloads\\Somany_Miracle_Backup_2026.zip</code></td>
+        <td>1 Company (FY 2025-27)</td>
+        <td><span class="px-1.5 py-0.5 bg-emerald-950 text-emerald-300 rounded text-[10px]">.ZIP / ACCMAS.DBF</span></td>
+      `;
+      tbody.appendChild(newRow);
+      showToast('Client Backup .ZIP unpacked! Running 1-Click DBF Extraction...');
+      runOneClickMigration();
+    }
+
+    function runOneClickMigration() {
+      const bar = document.getElementById('migrationProgressBar');
+      const lbl = document.getElementById('migrationStatusLabel');
+      const pct = document.getElementById('migrationPercentLabel');
+      let progress = 15;
+      bar.style.width = '15%';
+      lbl.textContent = 'Scanning Visual FoxPro .DBF / .CDX tables & transliterating Gujarati fonts...';
+      pct.textContent = '15%';
+
+      const interval = setInterval(() => {
+        progress += 25;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          bar.style.width = '100%';
+          lbl.textContent = 'Migration Progress (Elapsed: 00:01.4 sec) — 100% Complete & Penny-for-Penny Verified!';
+          pct.textContent = '100%';
+          showToast('100% Trial Balance Matched (₹ 0.00 Difference)!');
+        } else {
+          bar.style.width = progress + '%';
+          pct.textContent = progress + '%';
+        }
+      }, 180);
+    }
+
+    // --------------------------------------------------------------------------
+    // SCREEN 3: WORKSPACE & CERAMIC GODOWN STOCK RENDERER
+    // --------------------------------------------------------------------------
+    function renderWorkspaceStock() {
+      const tbody = document.getElementById('workspaceStockTable');
+      if (!tbody) return;
+      tbody.innerHTML = state.tileCatalog.map(item => {
+        const totalSqmt = (item.stockBoxes * item.sqmtPerBox).toFixed(0);
+        return `
+          <tr>
+            <td class="font-bold">${item.name}</td>
+            <td class="text-center"><span class="px-1.5 py-0.5 bg-slate-800 text-amber-300 rounded text-[10px]">${item.grade}</span></td>
+            <td class="text-right font-bold text-emerald-400">${item.stockBoxes.toLocaleString('en-IN')}</td>
+            <td class="text-right text-cyan-300">${Number(totalSqmt).toLocaleString('en-IN')}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function highlightDesktopMenu(idx) {
+      const items = document.querySelectorAll('.desktop-menu-item');
+      if (!items.length) return;
+      state.activeMenuIndex = (idx + items.length) % items.length;
+      items.forEach((el, i) => {
+        if (i === state.activeMenuIndex) {
+          el.className = 'desktop-menu-item w-full text-left px-3 py-2 rounded flex items-center justify-between font-bold bg-amber-300 text-slate-950';
+        } else {
+          el.className = 'desktop-menu-item w-full text-left px-3 py-2 rounded flex items-center justify-between hover:bg-slate-800/60';
+        }
+      });
+    }
+
+    // --------------------------------------------------------------------------
+    // SCREEN 4: HIGH-SPEED CERAMIC SALES INVOICE ENGINE
+    // --------------------------------------------------------------------------
+    function renderPartyDropdown() {
+      const sel = document.getElementById('invPartySelect');
+      if (!sel) return;
+      sel.innerHTML = state.parties.map((p, idx) =>
+        `<option value="${idx}">${p.name} (${p.guj})</option>`
+      ).join('');
+      onInvoicePartyChange();
+    }
+
+    function onInvoicePartyChange() {
+      const sel = document.getElementById('invPartySelect');
+      if (!sel) return;
+      const p = state.parties[sel.value] || state.parties[0];
+      document.getElementById('invPartyGstinBadge').textContent = p.gstin + ' ✓';
+      document.getElementById('invPartyBalDisplay').textContent = p.bal;
+    }
+
+    function renderInvoiceGrid() {
+      const tbody = document.getElementById('invoiceItemsBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = state.invoiceRows.map((row, idx) => {
+        const totalSqmt = +(row.boxes * row.sqmtPerBox).toFixed(2);
+        const grossAmt = row.rateBasis === 'SQMT' ? (totalSqmt * row.rate) : (row.boxes * row.rate);
+        const discAmt = grossAmt * ((row.discPct || 0) / 100);
+        const taxableAmt = Math.round((grossAmt - discAmt) * 100) / 100;
+        const gstAmt = Math.round((taxableAmt * (row.gstPct / 100)) * 100) / 100;
+        const netAmt = Math.round((taxableAmt + gstAmt) * 100) / 100;
+
+        // Datalist options for tile items
+        const itemOptions = state.tileCatalog.map(t => `<option value="${t.name}"></option>`).join('');
+
+        return `
+          <tr>
+            <td class="text-center font-bold">${idx + 1}</td>
+            <td>
+              <input type="text" list="tileList${idx}" value="${row.itemName}"
+                onchange="updateInvoiceRowItem(${idx}, this.value)"
+                class="erp-input w-full font-bold" />
+              <datalist id="tileList${idx}">${itemOptions}</datalist>
+            </td>
+            <td><input type="text" value="${row.hsn}" onchange="updateInvoiceField(${idx}, 'hsn', this.value)" class="erp-input w-full text-center" /></td>
+            <td>
+              <select onchange="updateInvoiceField(${idx}, 'grade', this.value)" class="erp-input w-full text-center font-bold">
+                <option value="PREM" ${row.grade === 'PREM' ? 'selected' : ''}>PREM</option>
+                <option value="STD" ${row.grade === 'STD' ? 'selected' : ''}>STD</option>
+                <option value="COM" ${row.grade === 'COM' ? 'selected' : ''}>COM</option>
+              </select>
+            </td>
+            <td><input type="number" value="${row.boxes}" oninput="updateInvoiceField(${idx}, 'boxes', this.value)" class="erp-input w-full text-right font-bold text-amber-300" /></td>
+            <td><input type="number" value="${row.pcsPerBox}" oninput="updateInvoiceField(${idx}, 'pcsPerBox', this.value)" class="erp-input w-full text-center" /></td>
+            <td><input type="number" step="0.01" value="${row.sqmtPerBox}" oninput="updateInvoiceField(${idx}, 'sqmtPerBox', this.value)" class="erp-input w-full text-right text-cyan-300" /></td>
+            <td class="text-right font-bold text-cyan-300">${totalSqmt.toFixed(2)}</td>
+            <td>
+              <select onchange="updateInvoiceField(${idx}, 'rateBasis', this.value)" class="erp-input w-full font-bold text-amber-300">
+                <option value="SQMT" ${row.rateBasis === 'SQMT' ? 'selected' : ''}>Sq.Mt</option>
+                <option value="BOX" ${row.rateBasis === 'BOX' ? 'selected' : ''}>Box</option>
+              </select>
+            </td>
+            <td><input type="number" value="${row.rate}" oninput="updateInvoiceField(${idx}, 'rate', this.value)" class="erp-input w-full text-right font-bold" /></td>
+            <td><input type="number" step="0.5" value="${row.discPct}" oninput="updateInvoiceField(${idx}, 'discPct', this.value)" class="erp-input w-full text-right" /></td>
+            <td class="text-right font-bold">₹ ${formatINR(taxableAmt)}</td>
+            <td class="text-center">${row.gstPct}%</td>
+            <td class="text-right font-bold text-emerald-400">₹ ${formatINR(netAmt)}</td>
+            <td class="text-center">
+              <button onclick="removeInvoiceRow(${idx})" class="text-rose-400 hover:text-rose-300 font-bold" title="Delete Row">✕</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      recalculateInvoice();
+    }
+
+    function updateInvoiceRowItem(idx, val) {
+      const matched = state.tileCatalog.find(t => t.name.toLowerCase() === val.toLowerCase());
+      if (matched) {
+        state.invoiceRows[idx].itemName = matched.name;
+        state.invoiceRows[idx].hsn = matched.hsn;
+        state.invoiceRows[idx].grade = matched.grade;
+        state.invoiceRows[idx].pcsPerBox = matched.pcsPerBox;
+        state.invoiceRows[idx].sqmtPerBox = matched.sqmtPerBox;
+        state.invoiceRows[idx].rateBasis = matched.rateBasis;
+        state.invoiceRows[idx].rate = matched.defaultRate;
+      } else {
+        state.invoiceRows[idx].itemName = val;
+      }
+      renderInvoiceGrid();
+    }
+
+    function updateInvoiceField(idx, field, val) {
+      if (['boxes', 'pcsPerBox', 'sqmtPerBox', 'rate', 'discPct'].includes(field)) {
+        state.invoiceRows[idx][field] = parseFloat(val) || 0;
+      } else {
+        state.invoiceRows[idx][field] = val;
+      }
+      renderInvoiceGrid();
+    }
+
+    function addInvoiceRow() {
+      const sample = state.tileCatalog[2] || state.tileCatalog[0];
+      state.invoiceRows.push({
+        itemName: sample.name,
+        hsn: sample.hsn,
+        grade: sample.grade,
+        boxes: 100,
+        pcsPerBox: sample.pcsPerBox,
+        sqmtPerBox: sample.sqmtPerBox,
+        rateBasis: sample.rateBasis,
+        rate: sample.defaultRate,
+        discPct: 0,
+        gstPct: 18
+      });
+      renderInvoiceGrid();
+      showToast('Added new Ceramic Line-Item row');
+    }
+
+    function removeInvoiceRow(idx) {
+      if (state.invoiceRows.length <= 1) {
+        showToast('Invoice must have at least 1 line item.');
+        return;
+      }
+      state.invoiceRows.splice(idx, 1);
+      renderInvoiceGrid();
+    }
+
+    function recalculateInvoice() {
+      let totalBoxes = 0;
+      let totalSqmt = 0;
+      let subTotalTaxable = 0;
+
+      state.invoiceRows.forEach(row => {
+        const sqmt = +(row.boxes * row.sqmtPerBox).toFixed(2);
+        const gross = row.rateBasis === 'SQMT' ? (sqmt * row.rate) : (row.boxes * row.rate);
+        const disc = gross * ((row.discPct || 0) / 100);
+        const taxable = gross - disc;
+
+        totalBoxes += Number(row.boxes) || 0;
+        totalSqmt += sqmt;
+        subTotalTaxable += taxable;
+      });
+
+      const packaging = parseFloat(document.getElementById('invPackagingAmt')?.value) || 0;
+      const netTaxable = subTotalTaxable + packaging;
+      const cgst = netTaxable * 0.09;
+      const sgst = netTaxable * 0.09;
+      const exactTotal = netTaxable + cgst + sgst;
+      const grandTotal = Math.round(exactTotal);
+      const roundOff = grandTotal - exactTotal;
+
+      // Broker %
+      const brokerPct = parseFloat(document.getElementById('invBrokerSelect')?.value) || 0;
+      const brokerAmt = netTaxable * (brokerPct / 100);
+
+      // Weight (approx 28.8 kg per box average)
+      const weightTonnes = (totalBoxes * 28.8) / 1000;
+
+      document.getElementById('invSumBoxesSqmt').textContent = `${totalBoxes} Bx | ${totalSqmt.toFixed(2)} Sq.Mt`;
+      document.getElementById('invSumWeight').textContent = `${weightTonnes.toFixed(2)} Metric Tonnes`;
+      document.getElementById('invSumBrokerage').textContent = `₹ ${formatINR(brokerAmt)} (${brokerPct.toFixed(1)}%)`;
+
+      document.getElementById('invSubTotalDisplay').textContent = '₹ ' + formatINR(subTotalTaxable);
+      document.getElementById('invNetTaxableDisplay').textContent = '₹ ' + formatINR(netTaxable);
+      document.getElementById('invCgstDisplay').textContent = '₹ ' + formatINR(cgst);
+      document.getElementById('invSgstDisplay').textContent = '₹ ' + formatINR(sgst);
+      document.getElementById('invRoundOffDisplay').textContent = (roundOff >= 0 ? '+ ₹ ' : '- ₹ ') + formatINR(Math.abs(roundOff));
+      document.getElementById('invGrandTotalDisplay').textContent = '₹ ' + formatINR(grandTotal);
+
+      return { totalBoxes, totalSqmt, netTaxable, cgst, sgst, grandTotal, brokerAmt };
+    }
+
+    function resetSampleInvoice() {
+      state.invoiceRows = [
+        { itemName: '600x600 GVT STATUARIO', hsn: '690721', grade: 'PREM', boxes: 500, pcsPerBox: 4, sqmtPerBox: 1.44, rateBasis: 'SQMT', rate: 280, discPct: 0, gstPct: 18 },
+        { itemName: '600x1200 HIGH GLOSS WHITE', hsn: '690721', grade: 'STD', boxes: 250, pcsPerBox: 2, sqmtPerBox: 1.44, rateBasis: 'BOX', rate: 390, discPct: 0, gstPct: 18 }
+      ];
+      document.getElementById('invPackagingAmt').value = 1500;
+      renderInvoiceGrid();
+      showToast('Reset Invoice to Morbi Ceramic Sample (#0842 — ₹ 3,54,708)');
+    }
+
+    function saveSalesInvoice() {
+      if (state.caAuditLocked) {
+        showToast('🔒 BLOCKED: Period is Audit-Locked by CA! Press F12 with CA PIN to unlock.');
+        return;
+      }
+      const totals = recalculateInvoice();
+      const invNo = document.getElementById('invNumber').value;
+      const partyIdx = document.getElementById('invPartySelect').value;
+      const party = state.parties[partyIdx] || state.parties[0];
+
+      // Update today's billing KPI on workspace
+      state.companies[state.activeCompanyIndex].salesToday += totals.grandTotal;
+      document.getElementById('kpiTodaySales').textContent = '₹ ' + Math.round(state.companies[state.activeCompanyIndex].salesToday).toLocaleString('en-IN');
+
+      // If Cash bill, also add to Rojmel Receipts
+      const billType = document.getElementById('invBillType').value;
+      if (billType === 'CASH') {
+        state.rojmelReceipts.push({
+          id: Date.now(),
+          vno: invNo.split('/').pop() || '90',
+          party: `Cash Sales: ${party.name}`,
+          kasar: 0,
+          amt: totals.grandTotal,
+          audited: false
+        });
+        renderRojmelTables();
+      }
+
+      showToast(`✓ Saved Invoice ${invNo} (₹ ${formatINR(totals.grandTotal)}) + IRN & E-Way Bill Generated!`);
+    }
+
+    // --------------------------------------------------------------------------
+    // SCREEN 5: TRADITIONAL GUJARATI ROJMEL ENGINE
+    // --------------------------------------------------------------------------
+    function toggleRojmelBook() {
+      if (state.rojmelBook.includes('CASH')) {
+        state.rojmelBook = 'HDFC BANK CC A/C (બેંક ખાતું)';
+      } else {
+        state.rojmelBook = 'MAIN CASH A/C (રોકડ ખાતું)';
+      }
+      document.getElementById('rojmelActiveBookLabel').textContent = state.rojmelBook;
+      showToast('[F4] Switched Rojmel Book to: ' + state.rojmelBook);
+    }
+
+    function toggleRojmelEntryType() {
+      const sel = document.getElementById('rojmelInputType');
+      sel.value = sel.value === 'RECEIPT' ? 'PAYMENT' : 'RECEIPT';
+      syncRojmelTypeDropdown();
+    }
+
+    function syncRojmelTypeDropdown() {
+      const sel = document.getElementById('rojmelInputType');
+      const lbl = document.getElementById('rojmelActiveTypeLabel');
+      if (sel.value === 'RECEIPT') {
+        lbl.textContent = 'RECEIPT (આવક / JAMA)';
+        sel.className = 'erp-input w-full font-bold text-emerald-300';
+      } else {
+        lbl.textContent = 'PAYMENT (જાવક / UDHAR)';
+        sel.className = 'erp-input w-full font-bold text-rose-300';
+      }
+      showToast('[F3] Entry Mode: ' + lbl.textContent);
+    }
+
+    function renderRojmelTables() {
+      const recBody = document.getElementById('rojmelReceiptsBody');
+      const payBody = document.getElementById('rojmelPaymentsBody');
+      if (!recBody || !payBody) return;
+
+      let totalRec = 0;
+      recBody.innerHTML = state.rojmelReceipts.map((r, i) => {
+        totalRec += Number(r.amt) || 0;
+        return `
+          <tr tabindex="0" onkeydown="if(event.key==='Tab'){event.preventDefault(); toggleRojmelAudit('RECEIPT', ${i});}" class="cursor-pointer">
+            <td class="text-center" onclick="toggleRojmelAudit('RECEIPT', ${i})">
+              <span class="px-1.5 py-0.5 rounded font-bold ${r.audited ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'}">
+                ${r.audited ? '✓' : '○'}
+              </span>
+            </td>
+            <td class="text-center font-bold text-amber-300">${r.vno}</td>
+            <td class="font-semibold">${r.party}</td>
+            <td class="text-right opacity-75">${r.kasar ? formatINR(r.kasar) : '0.00'}</td>
+            <td class="text-right font-bold text-emerald-400">${formatINR(r.amt)}</td>
+            <td class="text-center">
+              <button onclick="deleteRojmelRow('RECEIPT', ${i})" class="text-rose-400 hover:text-rose-300 font-bold" title="Ctrl+Y Delete">✕</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      let totalPay = 0;
+      payBody.innerHTML = state.rojmelPayments.map((p, i) => {
+        totalPay += Number(p.amt) || 0;
+        return `
+          <tr tabindex="0" onkeydown="if(event.key==='Tab'){event.preventDefault(); toggleRojmelAudit('PAYMENT', ${i});}" class="cursor-pointer">
+            <td class="text-center" onclick="toggleRojmelAudit('PAYMENT', ${i})">
+              <span class="px-1.5 py-0.5 rounded font-bold ${p.audited ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'}">
+                ${p.audited ? '✓' : '○'}
+              </span>
+            </td>
+            <td class="text-center font-bold text-amber-300">${p.vno}</td>
+            <td class="font-semibold">${p.party}</td>
+            <td class="text-right opacity-75">${p.kasar ? formatINR(p.kasar) : '0.00'}</td>
+            <td class="text-right font-bold text-rose-300">${formatINR(p.amt)}</td>
+            <td class="text-center">
+              <button onclick="deleteRojmelRow('PAYMENT', ${i})" class="text-rose-400 hover:text-rose-300 font-bold" title="Ctrl+Y Delete">✕</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      const closingSilak = totalRec - totalPay;
+      document.getElementById('rojmelTotalReceipts').textContent = '₹ ' + formatINR(totalRec);
+      document.getElementById('rojmelTotalPayments').textContent = '₹ ' + formatINR(totalPay);
+      document.getElementById('rojmelClosingBalance').textContent = `₹ ${formatINR(Math.abs(closingSilak))} ${closingSilak >= 0 ? 'Dr (સિલક)' : 'Cr (Overdraft)'}`;
+      document.getElementById('kpiCashBalance').textContent = `₹ ${Math.round(closingSilak).toLocaleString('en-IN')} Dr`;
+    }
+
+    function addRojmelEntry() {
+      if (state.caAuditLocked) {
+        showToast('🔒 BLOCKED: Period is Audit-Locked by CA!');
+        return;
+      }
+      const type = document.getElementById('rojmelInputType').value;
+      const party = document.getElementById('rojmelInputParty').value.trim() || 'Cash Party';
+      const amt = parseFloat(document.getElementById('rojmelInputAmt').value) || 0;
+      const kasar = parseFloat(document.getElementById('rojmelInputKasar').value) || 0;
+
+      if (amt <= 0) {
+        showToast('Please enter a valid positive Amount (₹).');
+        return;
+      }
+
+      if (type === 'RECEIPT') {
+        const nextVno = String(88 + state.rojmelReceipts.length);
+        state.rojmelReceipts.push({ id: Date.now(), vno: nextVno, party, kasar, amt, audited: false });
+        showToast(`✓ Added Aavvak (Receipt) #${nextVno}: ${party} — ₹ ${formatINR(amt)}`);
+      } else {
+        const nextVno = String(41 + state.rojmelPayments.length);
+        state.rojmelPayments.push({ id: Date.now(), vno: nextVno, party, kasar, amt, audited: false });
+        showToast(`✓ Added Javak (Payment) #${nextVno}: ${party} — ₹ ${formatINR(amt)}`);
+      }
+
+      renderRojmelTables();
+      document.getElementById('rojmelInputParty').focus();
+    }
+
+    function toggleRojmelAudit(side, idx) {
+      if (side === 'RECEIPT') {
+        state.rojmelReceipts[idx].audited = !state.rojmelReceipts[idx].audited;
+      } else {
+        state.rojmelPayments[idx].audited = !state.rojmelPayments[idx].audited;
+      }
+      renderRojmelTables();
+      showToast('✓ Toggled Audit Mark (Tab)');
+    }
+
+    function deleteRojmelRow(side, idx) {
+      if (state.caAuditLocked) {
+        showToast('🔒 Cannot delete voucher: Period is Audit-Locked by CA!');
+        return;
+      }
+      if (side === 'RECEIPT') {
+        if (idx === 0) {
+          showToast('Opening Balance row cannot be deleted.');
+          return;
+        }
+        state.rojmelReceipts.splice(idx, 1);
+      } else {
+        state.rojmelPayments.splice(idx, 1);
+      }
+      renderRojmelTables();
+      showToast('Deleted Rojmel entry (Ctrl+Y)');
+    }
+
+    // --------------------------------------------------------------------------
+    // SCREEN 6: CA AUDITOR SUITE & GSTR-2B AI RECONCILER
+    // --------------------------------------------------------------------------
+    function renderGstr2bTable() {
+      const tbody = document.getElementById('gstr2bTableBody');
+      if (!tbody) return;
+
+      const filtered = state.gstr2bRows.filter(r =>
+        state.gstrFilter === 'ALL' ? true : r.status === state.gstrFilter
+      );
+
+      tbody.innerHTML = filtered.map(row => {
+        let badgeHtml = '';
+        if (row.status === 'AI-MATCH') {
+          badgeHtml = `<span class="px-2 py-0.5 bg-emerald-500 text-slate-950 font-extrabold rounded text-[10px]">✓ AI-MATCH</span>`;
+        } else if (row.status === 'MISSING') {
+          badgeHtml = `<span class="px-2 py-0.5 bg-amber-400 text-slate-950 font-extrabold rounded text-[10px]">! IN 2B ONLY</span>`;
+        } else {
+          badgeHtml = `<span class="px-2 py-0.5 bg-rose-600 text-white font-extrabold rounded text-[10px]">✕ HOLD ITC</span>`;
+        }
+
+        return `
+          <tr onclick="toggleGstrRowSelect(${row.id})" class="cursor-pointer">
+            <td class="text-center">
+              <input type="checkbox" ${row.selected ? 'checked' : ''} class="accent-amber-400" />
+            </td>
+            <td class="font-bold">${row.supplier}</td>
+            <td class="text-cyan-300 font-bold">${row.portalInv}</td>
+            <td class="${row.status === 'MISSING' ? 'text-amber-300 font-extrabold' : 'text-emerald-300 font-bold'}">${row.booksInv}</td>
+            <td class="text-right">₹ ${formatINR(row.taxable)}</td>
+            <td class="text-right font-bold">₹ ${formatINR(row.tax)}</td>
+            <td class="text-right">${row.diff}</td>
+            <td class="text-center ${row.filed.includes('Y') ? 'text-emerald-400' : 'text-rose-400 font-bold'}">${row.filed}</td>
+            <td class="text-center">${badgeHtml}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterGstr2b(status) {
+      state.gstrFilter = status;
+      renderGstr2bTable();
+    }
+
+    function toggleGstrRowSelect(id) {
+      const item = state.gstr2bRows.find(r => r.id === id);
+      if (item) item.selected = !item.selected;
+      renderGstr2bTable();
+    }
+
+    function postMissing2bEntries() {
+      const missingRow = state.gstr2bRows.find(r => r.status === 'MISSING');
+      if (!missingRow) {
+        showToast('All GSTR-2B Missing Invoices are already posted into Purchase Register!');
+        return;
+      }
+      missingRow.booksInv = 'AC-884 (AUTO-POSTED)';
+      missingRow.diff = '0.00';
+      missingRow.status = 'AI-MATCH';
+
+      document.getElementById('caItcEligibleDisplay').textContent = '₹ 15,27,300.00';
+      document.getElementById('caItcMissingDisplay').textContent = '₹ 0.00 (All Claimed!)';
+      document.getElementById('kpiItcEligible').textContent = '₹ 15,27,300';
+      document.getElementById('kpiItcMissingBadge').textContent = '✓ 100% GSTR-2B Reconciled';
+      document.getElementById('kpiItcMissingBadge').className = 'text-[11px] text-emerald-400 font-mono-erp';
+
+      renderGstr2bTable();
+      showToast('✓ Auto-Posted Ashapura Ball Clay (AC-884) to Purchase Register & claimed ₹ 45,200 ITC!');
+    }
+
+    function switchActiveCompany(index) {
+      const idx = parseInt(index, 10) || 0;
+      state.activeCompanyIndex = idx;
+      const comp = state.companies[idx];
+
+      document.getElementById('headerCompanyTitle').textContent = comp.name;
+      document.getElementById('headerCompanyGstin').textContent = comp.gstin;
+      document.getElementById('kpiTodaySales').textContent = '₹ ' + comp.salesToday.toLocaleString('en-IN');
+      document.getElementById('kpiCashBalance').textContent = '₹ ' + comp.cashSilak.toLocaleString('en-IN') + ' Dr';
+
+      const caDrop = document.getElementById('caClientDropdown');
+      if (caDrop) caDrop.value = String(idx);
+
+      closeAllModals();
+      showToast(`Switched Active Company to: ${comp.name}`);
+    }
+
+    // --------------------------------------------------------------------------
+    // GLOBAL MODALS & UTILITIES (F3, F9, F10, F12, ALT+P, CTRL+G)
+    // --------------------------------------------------------------------------
+    function openModal(id) {
+      closeAllModals();
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('hidden');
+      if (id === 'modalClientSwitcher') renderClientSwitcherModal();
+    }
+
+    function closeAllModals() {
+      ['modalMasterCreation', 'modalPrintPreview', 'modalLedgerAging', 'modalClientSwitcher', 'modalDateChange', 'modalAuditLock', 'modalGenericViewer'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+    }
+
+    function openMasterModal(tab) {
+      openModal('modalMasterCreation');
+      switchMasterTab(tab || 'party');
+    }
+
+    function switchMasterTab(tab) {
+      const partyContent = document.getElementById('masterTabPartyContent');
+      const itemContent = document.getElementById('masterTabItemContent');
+      const btnParty = document.getElementById('tabBtnMasterParty');
+      const btnItem = document.getElementById('tabBtnMasterItem');
+
+      if (tab === 'item') {
+        partyContent.classList.add('hidden');
+        itemContent.classList.remove('hidden');
+        btnItem.className = 'flex-1 py-2 font-bold bg-amber-400 text-slate-950';
+        btnParty.className = 'flex-1 py-2 font-bold text-slate-300 hover:text-white';
+      } else {
+        itemContent.classList.add('hidden');
+        partyContent.classList.remove('hidden');
+        btnParty.className = 'flex-1 py-2 font-bold bg-amber-400 text-slate-950';
+        btnItem.className = 'flex-1 py-2 font-bold text-slate-300 hover:text-white';
+      }
+    }
+
+    function verifyGstinPortal() {
+      const gstin = document.getElementById('newPartyGstin').value.trim().toUpperCase();
+      document.getElementById('newPartyName').value = 'SHREE KHODAL CERAMIC HUB - MORBI (' + gstin.slice(0, 6) + ')';
+      document.getElementById('newPartyGuj').value = 'શ્રી ખોડલ સિરામિક હબ - મોરબી';
+      showToast('✓ Live GST Portal Verified: Active Regular Taxpayer!');
+    }
+
+    function saveNewPartyMaster() {
+      const name = document.getElementById('newPartyName').value.trim();
+      const guj = document.getElementById('newPartyGuj').value.trim() || name;
+      const gstin = document.getElementById('newPartyGstin').value.trim();
+      const opBal = parseFloat(document.getElementById('newPartyOpBal').value) || 0;
+      const mobile = document.getElementById('newPartyMobile').value.trim();
+
+      state.parties.push({
+        id: Date.now(),
+        name,
+        guj,
+        gstin,
+        bal: `₹ ${formatINR(opBal)} Dr (Limit: ₹ 10L)`,
+        mobile,
+        city: 'Morbi',
+        overdue30: opBal,
+        overdue60: 0
+      });
+
+      renderPartyDropdown();
+      document.getElementById('invPartySelect').value = String(state.parties.length - 1);
+      onInvoicePartyChange();
+      closeAllModals();
+      showToast(`✓ Created Party "${name}" & selected in Invoice!`);
+    }
+
+    function saveNewItemMaster() {
+      const name = document.getElementById('newItemName').value.trim();
+      const hsn = document.getElementById('newItemHsn').value.trim();
+      const grade = document.getElementById('newItemGrade').value;
+      const pcsPerBox = parseInt(document.getElementById('newItemPcs').value, 10) || 2;
+      const sqmtPerBox = parseFloat(document.getElementById('newItemSqmt').value) || 1.44;
+      const defaultRate = parseFloat(document.getElementById('newItemRate').value) || 300;
+      const stockBoxes = parseInt(document.getElementById('newItemStock').value, 10) || 1000;
+
+      state.tileCatalog.push({
+        id: Date.now(),
+        name,
+        hsn,
+        grade,
+        pcsPerBox,
+        sqmtPerBox,
+        defaultRate,
+        rateBasis: 'SQMT',
+        weightKg: 35,
+        stockBoxes
+      });
+
+      state.invoiceRows.push({
+        itemName: name,
+        hsn,
+        grade,
+        boxes: 200,
+        pcsPerBox,
+        sqmtPerBox,
+        rateBasis: 'SQMT',
+        rate: defaultRate,
+        discPct: 0,
+        gstPct: 18
+      });
+
+      renderWorkspaceStock();
+      renderInvoiceGrid();
+      closeAllModals();
+      showToast(`✓ Created Ceramic Item "${name}" (${sqmtPerBox} Sq.Mt/Box) & added to Bill!`);
+    }
+
+    // --------------------------------------------------------------------------
+    // PRINT & WHATSAPP PREVIEW MODAL (ALT+P)
+    // --------------------------------------------------------------------------
+    let currentPrintFormat = 'laser';
+    function openPrintModal() {
+      openModal('modalPrintPreview');
+      switchPrintFormat('laser');
+    }
+
+    function switchPrintFormat(fmt) {
+      currentPrintFormat = fmt;
+      const btnLaser = document.getElementById('btnPrintLaser');
+      const btnDot = document.getElementById('btnPrintDotMatrix');
+      const container = document.getElementById('printPreviewContainer');
+      const totals = recalculateInvoice();
+      const comp = state.companies[state.activeCompanyIndex];
+      const partyIdx = document.getElementById('invPartySelect')?.value || 0;
+      const party = state.parties[partyIdx] || state.parties[0];
+
+      if (fmt === 'dotmatrix') {
+        btnDot.className = 'px-3 py-1 rounded bg-amber-400 text-slate-950 font-extrabold';
+        btnLaser.className = 'px-3 py-1 rounded bg-slate-800 text-slate-300 hover:text-white';
+        container.innerHTML = `
+          <div class="dot-matrix-paper p-5 rounded border-2 border-slate-500 shadow-inner text-xs leading-relaxed overflow-x-auto">
+<pre class="font-mono-erp text-[11px] sm:text-xs">
+================================================================================
+                        ${comp.name}
+             8-A NATIONAL HIGHWAY, LALPAR CERAMIC ZONE, MORBI - 363642
+                  GSTIN: ${comp.gstin} | STATE: 24-GUJARAT
+--------------------------------------------------------------------------------
+TAX INVOICE / FACTORY GATE PASS (RAW ESC/P DOT-MATRIX MODE)
+Inv No : ${document.getElementById('invNumber')?.value || 'GST/26-27/0842'}                  Date : ${state.activeDate}
+Party  : ${party.name}
+GSTIN  : ${party.gstin}                  Truck: ${document.getElementById('invVehicleNo')?.value || 'GJ-36-T-4455'}
+================================================================================
+SR  TILE DESIGN & SIZE            GRADE  BOXES   SQ.MT   RATE(Rs)   TAXABLE(Rs)
+--------------------------------------------------------------------------------
+${state.invoiceRows.map((r, i) => {
+  const sq = (r.boxes * r.sqmtPerBox).toFixed(2);
+  const tx = (r.rateBasis === 'SQMT' ? sq * r.rate : r.boxes * r.rate).toFixed(2);
+  return `${String(i+1).padEnd(3)} ${r.itemName.padEnd(29).slice(0,29)} ${r.grade.padEnd(6)} ${String(r.boxes).padStart(5)} ${String(sq).padStart(7)} ${String(r.rate).padStart(9)} ${String(tx).padStart(13)}`;
+}).join('\n')}
+--------------------------------------------------------------------------------
+TOTAL BOXES: ${totals.totalBoxes}   | TOTAL SQ.MT: ${totals.totalSqmt.toFixed(2)}   | NET TAXABLE : Rs. ${formatINR(totals.netTaxable)}
+CGST (9%)  : Rs. ${formatINR(totals.cgst)}              | SGST (9%)   : Rs. ${formatINR(totals.sgst)}
+E-WAY BILL : 241099882341 (VALID)         | GRAND TOTAL : Rs. ${formatINR(totals.grandTotal)}
+================================================================================
+                  [ SUBJECT TO MORBI JURISDICTION - E.&O.E. ]
+</pre>
+          </div>
+        `;
+      } else {
+        btnLaser.className = 'px-3 py-1 rounded bg-amber-400 text-slate-950 font-extrabold';
+        btnDot.className = 'px-3 py-1 rounded bg-slate-800 text-slate-300 hover:text-white';
+        container.innerHTML = `
+          <div class="bg-white text-slate-900 p-5 rounded shadow-xl border border-slate-300 space-y-3">
+            <div class="flex flex-wrap justify-between items-start border-b-2 border-slate-900 pb-3 gap-3">
+              <div>
+                <h2 class="text-lg font-extrabold text-blue-950">${comp.name}</h2>
+                <p class="text-xs text-slate-600">8-A National Highway, Morbi Ceramic Cluster, Morbi - 363642 (Gujarat)</p>
+                <p class="text-xs font-bold mt-1">GSTIN: ${comp.gstin} • PAN: AABCR9988D</p>
+              </div>
+              <div class="text-right flex items-center gap-3">
+                <div class="text-right text-[10px]">
+                  <div class="font-bold text-emerald-700">✓ e-INVOICE IRN VERIFIED</div>
+                  <div>IRN: 8f92a4c1...9920e1b4</div>
+                  <div>e-Way Bill: <strong>2410 9988 2341</strong></div>
+                </div>
+                <div class="w-16 h-16 bg-slate-900 text-white flex items-center justify-center text-[9px] text-center p-1 font-mono-erp rounded">
+                  [NIC IRN QR CODE]
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs bg-slate-100 p-2.5 rounded border border-slate-300">
+              <div>
+                <div class="text-[10px] text-slate-500 uppercase font-bold">Billed To (Buyer):</div>
+                <div class="font-bold text-sm">${party.name}</div>
+                <div>${party.guj}</div>
+                <div class="font-bold text-blue-900">GSTIN: ${party.gstin}</div>
+              </div>
+              <div class="text-right">
+                <div>Invoice No: <strong>${document.getElementById('invNumber')?.value || 'GST/26-27/0842'}</strong></div>
+                <div>Date: <strong>${state.activeDate}</strong></div>
+                <div>Vehicle No: <strong>${document.getElementById('invVehicleNo')?.value || 'GJ-36-T-4455'}</strong></div>
+                <div>Broker: <strong>Rameshwar Agency</strong></div>
+              </div>
+            </div>
+
+            <table class="w-full border-collapse border border-slate-400 text-xs">
+              <thead class="bg-slate-800 text-white">
+                <tr>
+                  <th class="border border-slate-400 p-1.5 text-left">Tile Design / Size</th>
+                  <th class="border border-slate-400 p-1.5 text-center">HSN</th>
+                  <th class="border border-slate-400 p-1.5 text-right">Boxes</th>
+                  <th class="border border-slate-400 p-1.5 text-right">Total Sq.Mt</th>
+                  <th class="border border-slate-400 p-1.5 text-right">Rate</th>
+                  <th class="border border-slate-400 p-1.5 text-right">Taxable (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.invoiceRows.map(r => {
+                  const sq = +(r.boxes * r.sqmtPerBox).toFixed(2);
+                  const tx = r.rateBasis === 'SQMT' ? sq * r.rate : r.boxes * r.rate;
+                  return `
+                    <tr>
+                      <td class="border border-slate-300 p-1.5 font-bold">${r.itemName} (${r.grade})</td>
+                      <td class="border border-slate-300 p-1.5 text-center">${r.hsn}</td>
+                      <td class="border border-slate-300 p-1.5 text-right">${r.boxes}</td>
+                      <td class="border border-slate-300 p-1.5 text-right">${sq.toFixed(2)}</td>
+                      <td class="border border-slate-300 p-1.5 text-right">₹ ${r.rate}/${r.rateBasis}</td>
+                      <td class="border border-slate-300 p-1.5 text-right font-bold">₹ ${formatINR(tx)}</td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+
+            <div class="flex justify-between items-end pt-2 border-t-2 border-slate-900">
+              <div class="text-[11px] text-slate-600">
+                <div>Bank: HDFC Bank Ltd, Sanala Road Branch, Morbi • A/c: 50200044112299 • IFSC: HDFC0000412</div>
+                <div class="font-bold text-slate-800 mt-1">Total Boxes: ${totals.totalBoxes} | Total Area: ${totals.totalSqmt.toFixed(2)} Sq.Mt</div>
+              </div>
+              <div class="text-right space-y-0.5">
+                <div class="text-xs">Taxable + Packaging: <strong>₹ ${formatINR(totals.netTaxable)}</strong></div>
+                <div class="text-xs">CGST (9%) + SGST (9%): <strong>₹ ${formatINR(totals.cgst + totals.sgst)}</strong></div>
+                <div class="text-base font-extrabold text-emerald-700">GRAND TOTAL: ₹ ${formatINR(totals.grandTotal)}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function sendWhatsAppDirect() {
+      const partyIdx = document.getElementById('invPartySelect')?.value || 0;
+      const party = state.parties[partyIdx] || state.parties[0];
+      showToast(`📲 Sent PDF Invoice + E-Way Bill via Official WhatsApp Cloud API to ${party.name} (${party.mobile})!`);
+      closeAllModals();
+    }
+
+    // --------------------------------------------------------------------------
+    // KHATA-VAHI (LEDGER) & RECEIVABLE AGING MODAL (L1 / O1)
+    // --------------------------------------------------------------------------
+    function openLedgerModal(mode) {
+      openModal('modalLedgerAging');
+      const title = document.getElementById('ledgerModalTitle');
+      const body = document.getElementById('ledgerModalBody');
+
+      if (mode === 'aging') {
+        title.textContent = '[O1] BILL-BY-BILL OUTSTANDING RECEIVABLE AGING (UGRANI REPORT)';
+        body.innerHTML = `
+          <p class="text-xs opacity-85">Select parties with <kbd class="text-amber-300">Spacebar</kbd> and click <strong>[Alt+W] Send WhatsApp Ugrani Reminder</strong> to dispatch automated Gujarati/English payment reminders with QR links:</p>
+          <table class="w-full erp-table text-xs">
+            <thead>
+              <tr>
+                <th class="w-10 text-center">✓</th>
+                <th class="text-left">Party Name (ગુજરાતી નામ)</th>
+                <th class="text-center">City</th>
+                <th class="text-right">0-30 Days (₹)</th>
+                <th class="text-right">31-60 Days (₹)</th>
+                <th class="text-right">Total Due (₹)</th>
+                <th class="text-center">WhatsApp</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${state.parties.map(p => `
+                <tr>
+                  <td class="text-center"><input type="checkbox" checked class="accent-amber-400" /></td>
+                  <td class="font-bold">${p.name}<br><span class="text-[11px] text-amber-300">${p.guj}</span></td>
+                  <td class="text-center">${p.city}</td>
+                  <td class="text-right">₹ ${formatINR(p.overdue30)}</td>
+                  <td class="text-right text-rose-400 font-bold">₹ ${formatINR(p.overdue60)}</td>
+                  <td class="text-right font-extrabold text-emerald-400">₹ ${formatINR(p.overdue30 + p.overdue60)}</td>
+                  <td class="text-center">${p.mobile}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } else {
+        title.textContent = '[L1] KHATA-VAHI (PARTY LEDGER VIEW) — PATEL TILES MART (AHMEDABAD)';
+        body.innerHTML = `
+          <div class="flex justify-between items-center text-xs bg-slate-900 p-2.5 rounded border border-slate-700">
+            <span>Party: <strong class="text-amber-300">PATEL TILES MART - AHMEDABAD (પટેલ ટાઈલ્સ માર્ટ)</strong></span>
+            <span>Closing Balance: <strong class="text-emerald-400">₹ 4,12,500.00 Dr</strong></span>
+          </div>
+          <table class="w-full erp-table text-xs">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Vch Type</th>
+                <th>Vch No</th>
+                <th>Particulars / Narration</th>
+                <th class="text-right">Debit (ઉધાર ₹)</th>
+                <th class="text-right">Credit (જમા ₹)</th>
+                <th class="text-right">Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>01/04/2026</td>
+                <td>Opening</td>
+                <td>OP-1</td>
+                <td>Opening Balance b/f from Miracle DBF</td>
+                <td class="text-right font-bold">3,07,792.00</td>
+                <td class="text-right">0.00</td>
+                <td class="text-right">3,07,792 Dr</td>
+              </tr>
+              <tr>
+                <td>05/11/2026</td>
+                <td>Receipt</td>
+                <td>RC-81</td>
+                <td>RTGS Received in HDFC Bank CC A/c</td>
+                <td class="text-right">0.00</td>
+                <td class="text-right font-bold text-emerald-400">2,50,000.00</td>
+                <td class="text-right">57,792 Dr</td>
+              </tr>
+              <tr onclick="switchScreen(4)" class="cursor-pointer">
+                <td>14/11/2026</td>
+                <td class="text-amber-300 font-bold">Sales (F8)</td>
+                <td>GST/0842</td>
+                <td>750 Boxes Ceramic Tiles (GJ-36-T-4455) [Click to Drill-Down]</td>
+                <td class="text-right font-bold text-amber-300">3,54,708.00</td>
+                <td class="text-right">0.00</td>
+                <td class="text-right font-extrabold">4,12,500 Dr</td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      }
+    }
+
+    function sendBatchWhatsAppReminders() {
+      closeAllModals();
+      showToast('📲 Batch WhatsApp Ugrani Reminders with PDF Ledgers & UPI QR sent to 3 overdue parties!');
+    }
+
+    // --------------------------------------------------------------------------
+    // TALLY XML, GSTR JSON, CTRL+G GRAPH & HAVALA MODALS
+    // --------------------------------------------------------------------------
+    function triggerGstrJsonModal() {
+      openModal('modalGenericViewer');
+      document.getElementById('genericModalTitle').textContent = 'GSTR-3B & GSTR-1 PORTAL JSON EXPORT (OCT-2026)';
+      document.getElementById('genericModalContent').innerHTML = `
+        <pre class="bg-slate-950 text-emerald-400 p-3 rounded border border-slate-700 overflow-x-auto text-[11px] leading-relaxed">{
+  "gstin": "${state.companies[state.activeCompanyIndex].gstin}",
+  "fp": "102026",
+  "sup_details": {
+    "osup_det": { "txval": 14824500.00, "iamt": 1840200.00, "camt": 412102.50, "samt": 412102.50 }
+  },
+  "itc_elg": {
+    "itc_avl": [
+      { "ty": "OTH", "iamt": 620000.00, "camt": 453650.00, "samt": 453650.00 }
+    ]
+  }
+}</pre>
+        <div class="flex justify-end">
+          <button onclick="closeAllModals(); showToast('✓ Downloaded GSTR3B_24AABCR9988D1Z1_102026.json');" class="erp-btn px-4 py-1.5 bg-emerald-400 text-slate-950 font-extrabold rounded">
+            Download Ready-to-Upload GST JSON
+          </button>
+        </div>
+      `;
+    }
+
+    function triggerTallyXmlModal() {
+      openModal('modalGenericViewer');
+      document.getElementById('genericModalTitle').textContent = '1-CLICK TALLY PRIME XML & WINMAN ITR SCHEMA EXPORT';
+      document.getElementById('genericModalContent').innerHTML = `
+        <pre class="bg-slate-950 text-cyan-300 p-3 rounded border border-slate-700 overflow-x-auto text-[11px] leading-relaxed">&lt;ENVELOPE&gt;
+  &lt;HEADER&gt;&lt;TALLYREQUEST&gt;Import Data&lt;/TALLYREQUEST&gt;&lt;/HEADER&gt;
+  &lt;BODY&gt;
+    &lt;IMPORTDATA&gt;
+      &lt;REQUESTDESC&gt;&lt;REPORTNAME&gt;All Masters &amp; Vouchers&lt;/REPORTNAME&gt;&lt;/REQUESTDESC&gt;
+      &lt;REQUESTDATA&gt;
+        &lt;TALLYMESSAGE xmlns:UDF="TallyUDF"&gt;
+          &lt;VOUCHER VCHTYPE="Sales" ACTION="Create"&gt;
+            &lt;DATE&gt;20261114&lt;/DATE&gt;
+            &lt;VOUCHERNUMBER&gt;GST/26-27/0842&lt;/VOUCHERNUMBER&gt;
+            &lt;PARTYLEDGERNAME&gt;PATEL TILES MART - AHMEDABAD&lt;/PARTYLEDGERNAME&gt;
+            &lt;AMOUNT&gt;-354708.00&lt;/AMOUNT&gt;
+          &lt;/VOUCHER&gt;
+        &lt;/TALLYMESSAGE&gt;
+      &lt;/REQUESTDATA&gt;
+    &lt;/IMPORTDATA&gt;
+  &lt;/BODY&gt;
+&lt;/ENVELOPE&gt;</pre>
+        <div class="flex justify-end">
+          <button onclick="closeAllModals(); showToast('✓ Exported 100% Mapped Tally Prime XML File!');" class="erp-btn px-4 py-1.5 bg-amber-400 text-slate-950 font-extrabold rounded">
+            Export Tally_Prime_Masters_Vouchers.xml
+          </button>
+        </div>
+      `;
+    }
+
+    function openGraphModal() {
+      openModal('modalGenericViewer');
+      document.getElementById('genericModalTitle').textContent = '[Ctrl+G] MONTHLY CERAMIC TURNOVER & COLLECTION GRAPH (FY 2026-27)';
+      const months = [
+        { m: 'Apr', v: 65, amt: '₹ 1.42 Cr' },
+        { m: 'May', v: 78, amt: '₹ 1.71 Cr' },
+        { m: 'Jun', v: 70, amt: '₹ 1.54 Cr' },
+        { m: 'Jul', v: 85, amt: '₹ 1.88 Cr' },
+        { m: 'Aug', v: 92, amt: '₹ 2.04 Cr' },
+        { m: 'Sep', v: 88, amt: '₹ 1.95 Cr' },
+        { m: 'Oct', v: 100, amt: '₹ 2.25 Cr' }
+      ];
+      document.getElementById('genericModalContent').innerHTML = `
+        <div class="erp-card p-4 rounded space-y-3">
+          ${months.map(item => `
+            <div class="grid grid-cols-12 items-center gap-2 text-xs">
+              <span class="col-span-2 font-bold text-amber-300">${item.m} 2026</span>
+              <div class="col-span-8 bg-slate-900 h-5 rounded overflow-hidden border border-slate-700">
+                <div class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full" style="width:${item.v}%"></div>
+              </div>
+              <span class="col-span-2 text-right font-bold text-emerald-400">${item.amt}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function openHavalaModal() {
+      openModal('modalGenericViewer');
+      document.getElementById('genericModalTitle').textContent = '[F7 / Ctrl+H] YEAR-END HAVALA, TDS (194C/194Q/194H) & DEPRECIATION';
+      document.getElementById('genericModalContent').innerHTML = `
+        <div class="space-y-3">
+          <p class="opacity-85">Automated Statutory TDS &amp; Closing Stock Havala Journal Vouchers:</p>
+          <table class="w-full erp-table text-xs">
+            <thead>
+              <tr>
+                <th>Section</th>
+                <th>Party / Broker Head</th>
+                <th class="text-right">Turnover / Base</th>
+                <th class="text-center">TDS Rate</th>
+                <th class="text-right">Auto TDS Havala</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-bold text-amber-300">Sec 194H</td>
+                <td>Rameshwar Agency (Brokerage)</td>
+                <td class="text-right">₹ 4,80,000</td>
+                <td class="text-center">2.00%</td>
+                <td class="text-right font-bold text-emerald-400">₹ 9,600.00</td>
+              </tr>
+              <tr>
+                <td class="font-bold text-cyan-300">Sec 194C</td>
+                <td>Morbi Roadlines (Transport Contract)</td>
+                <td class="text-right">₹ 12,50,000</td>
+                <td class="text-center">2.00%</td>
+                <td class="text-right font-bold text-emerald-400">₹ 25,000.00</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="flex justify-end">
+            <button onclick="closeAllModals(); showToast('✓ Auto-Posted TDS & Year-End Havala JVs!');" class="erp-btn px-4 py-1.5 bg-amber-400 text-slate-950 font-extrabold rounded">
+              [Ctrl+A] Post Auto-Havala Entries
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // --------------------------------------------------------------------------
+    // F10 CLIENT SWITCHER, F2 DATE, F12 AUDIT LOCK, F9 CALCULATOR
+    // --------------------------------------------------------------------------
+    function renderClientSwitcherModal() {
+      const container = document.getElementById('clientSwitcherList');
+      if (!container) return;
+      container.innerHTML = state.companies.map((c, i) => `
+        <button onclick="switchActiveCompany(${i})" class="w-full p-2.5 rounded erp-card hover:border-amber-400 flex items-center justify-between text-left">
+          <div>
+            <div class="font-bold text-amber-300">${c.code} — ${c.name}</div>
+            <div class="text-[11px] opacity-80">GSTIN: ${c.gstin}</div>
+          </div>
+          <span class="px-2 py-0.5 bg-emerald-950 text-emerald-300 rounded text-[11px]">Select ↵</span>
+        </button>
+      `).join('');
+    }
+
+    function applyGlobalDateChange() {
+      const val = document.getElementById('inputModalGlobalDate').value.trim() || '14/11/2026';
+      state.activeDate = val;
+      document.getElementById('headerActiveDate').textContent = val;
+      document.getElementById('invDate').value = val;
+      document.getElementById('rojmelDateDisplay').textContent = val;
+      closeAllModals();
+      showToast('✓ Active Voucher Date updated to: ' + val);
+    }
+
+    function toggleCaAuditLockModal() {
+      openModal('modalAuditLock');
+    }
+
+    function confirmToggleAuditLock() {
+      const pin = document.getElementById('inputCaAuditPin').value;
+      if (pin !== '1234') {
+        showToast('Invalid CA Override PIN! (Use Demo PIN: 1234)');
+        return;
+      }
+      state.caAuditLocked = !state.caAuditLocked;
+      const badge = document.getElementById('headerAuditLockBadge');
+      const pill = document.getElementById('invoiceLockStatusPill');
+      const desc = document.getElementById('caLockCardDesc');
+
+      if (state.caAuditLocked) {
+        badge.className = 'ml-1 px-2 py-0.5 rounded font-mono-erp text-[11px] font-bold bg-rose-900 text-rose-200 border border-rose-500 flex items-center gap-1';
+        badge.innerHTML = '<span>🔒 CA Lock: FROZEN (Oct-26)</span>';
+        if (pill) {
+          pill.className = 'px-2 py-0.5 bg-rose-900 text-rose-200 rounded font-bold text-[11px]';
+          pill.textContent = '🔒 Voucher Lock: FROZEN BY CA';
+        }
+        if (desc) desc.textContent = 'Period is currently FROZEN. Factory operators cannot edit or delete vouchers.';
+        showToast('🔒 Period Oct-2026 is now FROZEN by CA Audit Lock!');
+      } else {
+        badge.className = 'ml-1 px-2 py-0.5 rounded font-mono-erp text-[11px] font-bold bg-emerald-900/80 text-emerald-300 border border-emerald-600 flex items-center gap-1';
+        badge.innerHTML = '<span>🔓 CA Lock: OPEN (Oct-26)</span>';
+        if (pill) {
+          pill.className = 'px-2 py-0.5 bg-emerald-900 text-emerald-300 rounded font-bold text-[11px]';
+          pill.textContent = 'Voucher Lock: OPEN';
+        }
+        if (desc) desc.textContent = 'Freeze factory billing edits for Oct-2026 (Requires CA OTP to unlock).';
+        showToast('🔓 CA Audit Lock UNLOCKED for voucher entry.');
+      }
+      closeAllModals();
+    }
+
+    function toggleCalculator() {
+      const calc = document.getElementById('floatingCalculator');
+      calc.classList.toggle('hidden');
+      if (!calc.classList.contains('hidden')) {
+        document.getElementById('calcExpression').focus();
+      }
+    }
+
+    function appendCalc(ch) {
+      const inp = document.getElementById('calcExpression');
+      inp.value += ch;
+      inp.focus();
+    }
+
+    function clearCalc() {
+      document.getElementById('calcExpression').value = '';
+      document.getElementById('calcResultDisplay').textContent = '0.00';
+    }
+
+    function evaluateCalc() {
+      const raw = document.getElementById('calcExpression').value.replace(/[^0-9+\-*/.() ]/g, '');
+      try {
+        const res = Function('"use strict";return (' + (raw || '0') + ')')();
+        document.getElementById('calcResultDisplay').textContent = Number(res).toFixed(2);
+      } catch (e) {
+        document.getElementById('calcResultDisplay').textContent = 'Error';
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // GLOBAL KEYBOARD NAVIGATION & FUNCTION KEY DISPATCHER (F1 - F12, ENTER, ESC)
+    // --------------------------------------------------------------------------
+    window.addEventListener('keydown', function (e) {
+      // Esc closes modals or returns to Screen 3 (M-Desktop Workspace)
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        const anyModalOpen = ['modalMasterCreation', 'modalPrintPreview', 'modalLedgerAging', 'modalClientSwitcher', 'modalDateChange', 'modalAuditLock', 'modalGenericViewer'].some(id => !document.getElementById(id).classList.contains('hidden'));
+        if (anyModalOpen) {
+          closeAllModals();
+        } else if (state.currentScreen !== 3) {
+          switchScreen(3);
+          showToast('Returned to M-Desktop Workspace (Esc)');
+        }
+        return;
+      }
+
+      // Function Keys F2 - F12
+      if (e.key === 'F2') {
+        e.preventDefault();
+        openModal('modalDateChange');
+      } else if (e.key === 'F3') {
+        e.preventDefault();
+        if (state.currentScreen === 5) {
+          toggleRojmelEntryType();
+        } else {
+          openMasterModal('party');
+        }
+      } else if (e.key === 'F4') {
+        e.preventDefault();
+        if (state.currentScreen === 5) toggleRojmelBook();
+      } else if (e.key === 'F5' || e.key === 'F6') {
+        e.preventDefault();
+        switchScreen(5);
+      } else if (e.key === 'F7') {
+        e.preventDefault();
+        openHavalaModal();
+      } else if (e.key === 'F8') {
+        e.preventDefault();
+        switchScreen(4);
+      } else if (e.key === 'F9') {
+        e.preventDefault();
+        toggleCalculator();
+      } else if (e.key === 'F10') {
+        e.preventDefault();
+        openModal('modalClientSwitcher');
+      } else if (e.key === 'F12') {
+        e.preventDefault();
+        toggleCaAuditLockModal();
+      }
+
+      // Modifier Shortcuts: Ctrl+A (Save), Alt+P / Ctrl+P (Print), Ctrl+G (Graph), Ctrl+H (Havala)
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
+        if (state.currentScreen === 1) {
+          e.preventDefault();
+          completeActivationStep();
+        } else if (state.currentScreen === 4) {
+          e.preventDefault();
+          saveSalesInvoice();
+        }
+      } else if ((e.altKey || e.ctrlKey) && e.key.toLowerCase() === 'p') {
+        e.preventDefault();
+        openPrintModal();
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'g') {
+        e.preventDefault();
+        openGraphModal();
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'h') {
+        e.preventDefault();
+        openHavalaModal();
+      }
+
+      // Screen 3 (M-Desktop) Up/Down Arrow & Enter Navigation
+      if (state.currentScreen === 3) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          highlightDesktopMenu(state.activeMenuIndex + 1);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          highlightDesktopMenu(state.activeMenuIndex - 1);
+        } else if (e.key === 'Enter' && document.activeElement.tagName !== 'BUTTON') {
+          e.preventDefault();
+          const items = document.querySelectorAll('.desktop-menu-item');
+          if (items[state.activeMenuIndex]) items[state.activeMenuIndex].click();
+        }
+      }
+
+      // Screen 4 (Sales Invoice) Enter-to-Next-Field Navigation
+      if (state.currentScreen === 4 && e.key === 'Enter' && e.target.classList.contains('enter-nav')) {
+        e.preventDefault();
+        const navInputs = Array.from(document.querySelectorAll('.enter-nav'));
+        const idx = navInputs.indexOf(e.target);
+        if (idx >= 0 && idx < navInputs.length - 1) {
+          navInputs[idx + 1].focus();
+          if (navInputs[idx + 1].select) navInputs[idx + 1].select();
+        }
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // INITIALIZE APPLICATION ON LOAD
+    // --------------------------------------------------------------------------
+    window.onload = function () {
+      renderWorkspaceStock();
+      renderPartyDropdown();
+      renderInvoiceGrid();
+      renderRojmelTables();
+      renderGstr2bTable();
+      // Start on Screen 1 (Activation Wizard) so the user can test the exact 1 -> 2 -> 3 -> 4 -> 5 -> 6 flow, or click any top tab
+      switchScreen(1);
+    };
+  </script>
+</body>
+</html>
